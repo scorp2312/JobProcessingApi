@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7B469284-ED6F-48B9-8E13-43410CEDEF32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Messages", "Shared.Messages\Shared.Messages.csproj", "{DC1614E3-1DFE-4F81-84E1-6CB7AB9D75C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobCreator", "JobCreator\JobCreator.csproj", "{067164AF-AB64-4DB3-9F8E-BB2533566F47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobProcessor", "JobProcessor\JobProcessor.csproj", "{1A38B85B-0F57-4186-BB14-C8677794EEF4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC1614E3-1DFE-4F81-84E1-6CB7AB9D75C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC1614E3-1DFE-4F81-84E1-6CB7AB9D75C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC1614E3-1DFE-4F81-84E1-6CB7AB9D75C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC1614E3-1DFE-4F81-84E1-6CB7AB9D75C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067164AF-AB64-4DB3-9F8E-BB2533566F47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067164AF-AB64-4DB3-9F8E-BB2533566F47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067164AF-AB64-4DB3-9F8E-BB2533566F47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067164AF-AB64-4DB3-9F8E-BB2533566F47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A38B85B-0F57-4186-BB14-C8677794EEF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A38B85B-0F57-4186-BB14-C8677794EEF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A38B85B-0F57-4186-BB14-C8677794EEF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A38B85B-0F57-4186-BB14-C8677794EEF4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DC1614E3-1DFE-4F81-84E1-6CB7AB9D75C9} = {7B469284-ED6F-48B9-8E13-43410CEDEF32}
+		{067164AF-AB64-4DB3-9F8E-BB2533566F47} = {7B469284-ED6F-48B9-8E13-43410CEDEF32}
+		{1A38B85B-0F57-4186-BB14-C8677794EEF4} = {7B469284-ED6F-48B9-8E13-43410CEDEF32}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "iLaQpKcGQQJR7ChFfDvB4sjseCJT4DtwTWyPm+sBQ6U=",
+  "Source": "JobProcessor",
+  "BasePath": "_content/JobProcessor",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
