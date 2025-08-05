@@ -109,3 +109,4 @@ C:\Users\scorp\Desktop\JobProcessingApi1\JobCreator\obj\Debug\net8.0\refint\JobC
 C:\Users\scorp\Desktop\JobProcessingApi1\JobCreator\obj\Debug\net8.0\JobCreator.pdb
 C:\Users\scorp\Desktop\JobProcessingApi1\JobCreator\obj\Debug\net8.0\JobCreator.genruntimeconfig.cache
 C:\Users\scorp\Desktop\JobProcessingApi1\JobCreator\obj\Debug\net8.0\ref\JobCreator.dll
+C:\Users\scorp\Desktop\JobProcessingApi1\JobCreator\obj\Debug\net8.0\JobCreator.sourcelink.json

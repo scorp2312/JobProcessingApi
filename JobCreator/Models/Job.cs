@@ -7,6 +7,7 @@ public class Job
     public DateTime? CompletedAt { get; set; }
     public JobStatus Status { get; set; }
     public string? Description { get; set; }
+    public string? Result { get; set; } 
 }
 
 public enum JobStatus

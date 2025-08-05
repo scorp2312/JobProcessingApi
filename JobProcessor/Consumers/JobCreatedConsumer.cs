@@ -23,7 +23,7 @@ public class JobCreatedConsumer : IConsumer<JobCreatedEvent>
         _ = Task.Run(async () =>
         {
 
-                await _jobProcessingService.ProcessJobAsync(message.JobId, message.Description);
+                await _jobProcessingService.ProcessJobAsync(message.JobId, message.Description, message.Result );
                 
         });
         ;

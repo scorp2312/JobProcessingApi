@@ -9,3 +9,4 @@ C:\Users\scorp\Desktop\JobProcessingApi1\Shared.Messages\obj\Debug\net8.0\Shared
 C:\Users\scorp\Desktop\JobProcessingApi1\Shared.Messages\obj\Debug\net8.0\refint\Shared.Messages.dll
 C:\Users\scorp\Desktop\JobProcessingApi1\Shared.Messages\obj\Debug\net8.0\Shared.Messages.pdb
 C:\Users\scorp\Desktop\JobProcessingApi1\Shared.Messages\obj\Debug\net8.0\ref\Shared.Messages.dll
+C:\Users\scorp\Desktop\JobProcessingApi1\Shared.Messages\obj\Debug\net8.0\Shared.Messages.sourcelink.json

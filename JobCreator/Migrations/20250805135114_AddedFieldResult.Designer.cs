@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JobCreator.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250731132946_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250805135114_AddedFieldResult")]
+    partial class AddedFieldResult
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,9 @@ namespace JobCreator.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Result")
+                        .HasColumnType("text");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");

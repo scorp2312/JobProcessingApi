@@ -18,7 +18,7 @@ public class JobCompletedConsumer : IConsumer<JobCompletedEvent>
         var message = context.Message;
         
         
-        await _jobService.MarkJobAsCompletedAsync(message.JobId, message.CompletedAt);
+        await _jobService.MarkJobAsCompletedAsync(message.JobId, message.CompletedAt, message.Result);
         
     }
 }
