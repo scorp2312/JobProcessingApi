@@ -12,7 +12,6 @@ public class JobCompletedConsumer : IConsumer<JobCompletedEvent>
     {
         _jobService = jobService;
     }
-
     public async Task Consume(ConsumeContext<JobCompletedEvent> context)
     {
         var message = context.Message;

@@ -12,6 +12,7 @@ public interface IJobService
     Task<JobDto> CreateJobAsync(CreateJobDto createJobDto);
     Task<List<JobDto>> GetAllJobsAsync();
     Task<JobDto?> GetJobByIdAsync(Guid id);
+    Task MarkJobAsInProgressAsync(Guid id);
     Task MarkJobAsCompletedAsync(Guid jobId, DateTime completedAt, string? result);
 }
 
@@ -70,6 +71,15 @@ public class JobService : IJobService
         return job != null ? MapToDto(job) : null;
     }
 
+    public async Task MarkJobAsInProgressAsync(Guid id)
+    {
+        var job = await _context.Jobs.FindAsync(id);
+        if (job != null)
+        {
+            job.Status = JobStatus.InProgress;
+            await _context.SaveChangesAsync();
+        }
+    }
     public async Task MarkJobAsCompletedAsync(Guid jobId, DateTime completedAt, string? result)
     {
         var job = await _context.Jobs.FindAsync(jobId);

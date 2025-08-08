@@ -19,7 +19,10 @@ public class JobProcessingService : IJobProcessingService
 
     public async Task ProcessJobAsync(Guid jobId, string? description, string? result)
     {
-        
+        await _publishEndpoint.Publish(new JobInProgressEvent
+        {
+            JobId = jobId
+        });
         
         await Task.Delay(5000);
         

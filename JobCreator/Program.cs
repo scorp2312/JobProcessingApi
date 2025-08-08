@@ -18,6 +18,7 @@ builder.Services.AddScoped<IJobService, JobService>();
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<JobCompletedConsumer>();
+    x.AddConsumer<JobInProgressConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
     {

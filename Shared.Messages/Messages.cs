@@ -15,3 +15,8 @@ public class JobCompletedEvent
     public DateTime CompletedAt { get; set; }
     public string? Result { get; set; }
 }
+
+public class JobInProgressEvent
+{
+    public Guid JobId { get; set; }
+}
