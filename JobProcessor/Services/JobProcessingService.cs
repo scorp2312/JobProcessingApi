@@ -26,7 +26,6 @@ public class JobProcessingService : IJobProcessingService
         
         await Task.Delay(5000);
         
-        
         await _publishEndpoint.Publish(new JobCompletedEvent
         {
             JobId = jobId,
