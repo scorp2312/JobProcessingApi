@@ -17,15 +17,6 @@ public class JobCreatedConsumer : IConsumer<JobCreatedEvent>
     public async Task Consume(ConsumeContext<JobCreatedEvent> context)
     {
         var message = context.Message;
-        
-        
-
-        _ = Task.Run(async () =>
-        {
-
-                await _jobProcessingService.ProcessJobAsync(message.JobId, message.Description);
-                
-        });
-        ;
+        await _jobProcessingService.ProcessJobAsync(message.JobId, message.Description, message.Result);
     }
 }

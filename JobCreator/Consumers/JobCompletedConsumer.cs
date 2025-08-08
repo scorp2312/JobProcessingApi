@@ -12,13 +12,12 @@ public class JobCompletedConsumer : IConsumer<JobCompletedEvent>
     {
         _jobService = jobService;
     }
-
     public async Task Consume(ConsumeContext<JobCompletedEvent> context)
     {
         var message = context.Message;
         
         
-        await _jobService.MarkJobAsCompletedAsync(message.JobId, message.CompletedAt);
+        await _jobService.MarkJobAsCompletedAsync(message.JobId, message.CompletedAt, message.Result);
         
     }
 }

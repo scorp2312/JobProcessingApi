@@ -5,7 +5,7 @@ namespace JobProcessor.Services;
 
 public interface IJobProcessingService
 {
-    Task ProcessJobAsync(Guid jobId, string? description);
+    Task ProcessJobAsync(Guid jobId, string? description, string? result);
 }
 
 public class JobProcessingService : IJobProcessingService
@@ -17,17 +17,20 @@ public class JobProcessingService : IJobProcessingService
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task ProcessJobAsync(Guid jobId, string? description)
+    public async Task ProcessJobAsync(Guid jobId, string? description, string? result)
     {
-        
+        await _publishEndpoint.Publish(new JobInProgressEvent
+        {
+            JobId = jobId
+        });
         
         await Task.Delay(5000);
-        
         
         await _publishEndpoint.Publish(new JobCompletedEvent
         {
             JobId = jobId,
-            CompletedAt = DateTime.UtcNow
+            CompletedAt = DateTime.UtcNow,
+            Result = new Random().Next(1, 101).ToString()
         });
         
     }
