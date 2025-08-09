@@ -102,7 +102,7 @@ public class JobService : IJobService
             CompletedAt = job.CompletedAt,
             Status = job.Status.ToString(),
             Description = job.Description,
-            Result = job.Result?.ToString()
+            Result = job.Result
         };
     }
 }

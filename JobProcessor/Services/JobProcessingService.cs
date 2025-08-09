@@ -32,6 +32,5 @@ public class JobProcessingService : IJobProcessingService
             CompletedAt = DateTime.UtcNow,
             Result = new Random().Next(1, 101).ToString()
         });
-        
     }
 }

@@ -7,8 +7,7 @@ namespace JobProcessor.Consumers;
 public class JobCreatedConsumer : IConsumer<JobCreatedEvent>
 {
     private readonly IJobProcessingService _jobProcessingService;
-
-
+    
     public JobCreatedConsumer(IJobProcessingService jobProcessingService)
     {
         _jobProcessingService = jobProcessingService;
