@@ -28,7 +28,6 @@ public class JobService : IJobService
     {
         _context = context;
         _publishEndpoint = publishEndpoint;
-
     }
 
     public async Task<JobDto> CreateJobAsync(CreateJobDto createJobDto)
@@ -48,11 +47,8 @@ public class JobService : IJobService
         await _publishEndpoint.Publish(new JobCreatedEvent
         {
             JobId = job.Id,
-            CreatedAt = job.CreatedAt,
-            Description = job.Description
         });
         
-
         return MapToDto(job);
     }
 
@@ -102,7 +98,7 @@ public class JobService : IJobService
             CompletedAt = job.CompletedAt,
             Status = job.Status.ToString(),
             Description = job.Description,
-            Result = job.Result?.ToString()
+            Result = job.Result
         };
     }
 }
