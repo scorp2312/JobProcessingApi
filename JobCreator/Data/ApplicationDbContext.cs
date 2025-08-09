@@ -20,7 +20,7 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.Status).IsRequired();
             entity.Property(e => e.Description).HasMaxLength(1000);
-            entity.Property(e => e.Result);
+            entity.Property(e => e.Result).HasMaxLength(1000);
             entity.HasIndex(e => e.Status);
         });
     }

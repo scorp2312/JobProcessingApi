@@ -5,7 +5,7 @@ namespace JobProcessor.Services;
 
 public interface IJobProcessingService
 {
-    Task ProcessJobAsync(Guid jobId, string? description, string? result);
+    Task ProcessJobAsync(Guid jobId);
 }
 
 public class JobProcessingService : IJobProcessingService
@@ -17,7 +17,7 @@ public class JobProcessingService : IJobProcessingService
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task ProcessJobAsync(Guid jobId, string? description, string? result)
+    public async Task ProcessJobAsync(Guid jobId)
     {
         await _publishEndpoint.Publish(new JobInProgressEvent
         {
