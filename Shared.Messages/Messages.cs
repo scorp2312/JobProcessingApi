@@ -1,6 +1,6 @@
 ﻿namespace Shared.Messages;
 
-public  class JobCreatedEvent
+public class JobCreatedEvent
 {
     public Guid JobId { get; set; }
 }
