@@ -2,7 +2,7 @@ namespace JobCreator.Consumers;
 
 using JobCreator.Services;
 using MassTransit;
-using Shared.Messages;
+using Shared.Messages.Events;
 
 public class JobInProgressConsumer : IConsumer<JobInProgressEvent>
 {

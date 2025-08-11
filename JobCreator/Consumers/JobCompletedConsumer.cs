@@ -2,7 +2,7 @@
 
 using JobCreator.Services;
 using MassTransit;
-using Shared.Messages;
+using Shared.Messages.Events;
 
 public class JobCompletedConsumer : IConsumer<JobCompletedEvent>
 {

@@ -1,10 +1,8 @@
 ﻿namespace JobProcessor.Services;
 
-using System.Diagnostics.CodeAnalysis;
 using MassTransit;
-using Shared.Messages;
+using Shared.Messages.Events;
 
-[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:FileNameMustMatchTypeName", Justification = "Reviewed.")]
 public interface IJobProcessingService
 {
     Task ProcessJobAsync(Guid jobId);

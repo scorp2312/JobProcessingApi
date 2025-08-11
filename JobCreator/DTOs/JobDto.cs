@@ -1,7 +1,5 @@
 ﻿namespace JobCreator.DTOs;
 
-using System.Diagnostics.CodeAnalysis;
-
 public class JobDto
 {
     public Guid Id { get; set; }
@@ -15,10 +13,4 @@ public class JobDto
     public string? Description { get; set; }
 
     public string? Result { get; set; }
-}
-
-[SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleType", Justification = "Reviewed.")]
-public class CreateJobDto
-{
-    public string? Description { get; set; }
 }

@@ -5,7 +5,7 @@ using JobCreator.DTOs;
 using JobCreator.Models;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Shared.Messages;
+using Shared.Messages.Events;
 
 public interface IJobService
 {
