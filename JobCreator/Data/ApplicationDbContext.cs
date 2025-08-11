@@ -1,7 +1,7 @@
-﻿using JobCreator.Models;
-using Microsoft.EntityFrameworkCore;
+﻿namespace JobCreator.Data;
 
-namespace JobCreator.Data;
+using JobCreator.Models;
+using Microsoft.EntityFrameworkCore;
 
 public class ApplicationDbContext : DbContext
 {

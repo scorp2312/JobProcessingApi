@@ -1,21 +1,21 @@
-﻿using JobProcessor.Services;
+﻿namespace JobProcessor.Consumers;
+
+using JobProcessor.Services;
 using MassTransit;
 using Shared.Messages;
 
-namespace JobProcessor.Consumers;
-
 public class JobCreatedConsumer : IConsumer<JobCreatedEvent>
 {
-    private readonly IJobProcessingService _jobProcessingService;
-    
+    private readonly IJobProcessingService jobProcessingService;
+
     public JobCreatedConsumer(IJobProcessingService jobProcessingService)
     {
-        _jobProcessingService = jobProcessingService;
+        this.jobProcessingService = jobProcessingService;
     }
 
     public async Task Consume(ConsumeContext<JobCreatedEvent> context)
     {
         var message = context.Message;
-        await _jobProcessingService.ProcessJobAsync(message.JobId);
+        await this.jobProcessingService.ProcessJobAsync(message.JobId);
     }
 }
