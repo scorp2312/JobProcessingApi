@@ -2,9 +2,9 @@ namespace Shared.Messages.Events;
 
 public class JobCompletedEvent
 {
-    public Guid JobId { get; set; }
+    public required Guid JobId { get; init; }
 
-    public DateTime CompletedAt { get; set; }
+    public required DateTime CompletedAt { get; init; }
 
-    public string? Result { get; set; }
+    public required string? Result { get; init; }
 }

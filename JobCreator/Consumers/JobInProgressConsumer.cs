@@ -4,19 +4,12 @@ using JobCreator.Services;
 using MassTransit;
 using Shared.Messages.Events;
 
-public class JobInProgressConsumer : IConsumer<JobInProgressEvent>
+public class JobInProgressConsumer(IJobService jobService) : IConsumer<JobInProgressEvent>
 {
-    private readonly IJobService jobService;
-
-    public JobInProgressConsumer(IJobService jobService)
-    {
-        this.jobService = jobService;
-    }
-
     public async Task Consume(ConsumeContext<JobInProgressEvent> context)
     {
         var message = context.Message;
 
-        await this.jobService.MarkJobAsInProgressAsync(message.JobId);
+        await jobService.MarkJobAsInProgressAsync(message.JobId);
     }
 }

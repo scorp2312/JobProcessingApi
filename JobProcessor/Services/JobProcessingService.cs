@@ -8,23 +8,16 @@ public interface IJobProcessingService
     Task ProcessJobAsync(Guid jobId);
 }
 
-public class JobProcessingService : IJobProcessingService
+public class JobProcessingService(IPublishEndpoint publishEndpoint) : IJobProcessingService
 {
-    private readonly IPublishEndpoint publishEndpoint;
-
-    public JobProcessingService(IPublishEndpoint publishEndpoint)
-    {
-        this.publishEndpoint = publishEndpoint;
-    }
-
     public async Task ProcessJobAsync(Guid jobId)
     {
-        await this.publishEndpoint.Publish(new JobInProgressEvent
+        await publishEndpoint.Publish(new JobInProgressEvent
         {
             JobId = jobId,
         });
         await Task.Delay(5000);
-        await this.publishEndpoint.Publish(new JobCompletedEvent
+        await publishEndpoint.Publish(new JobCompletedEvent
         {
             JobId = jobId,
             CompletedAt = DateTime.UtcNow,

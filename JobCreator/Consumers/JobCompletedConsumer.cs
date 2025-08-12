@@ -4,14 +4,9 @@ using JobCreator.Services;
 using MassTransit;
 using Shared.Messages.Events;
 
-public class JobCompletedConsumer : IConsumer<JobCompletedEvent>
+public class JobCompletedConsumer(IJobService jobService) : IConsumer<JobCompletedEvent>
 {
-    private readonly IJobService jobService;
-
-    public JobCompletedConsumer(IJobService jobService)
-    {
-        this.jobService = jobService;
-    }
+    private readonly IJobService jobService = jobService;
 
     public async Task Consume(ConsumeContext<JobCompletedEvent> context)
     {
