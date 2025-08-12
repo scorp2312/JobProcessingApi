@@ -22,7 +22,7 @@ public class JobsController(IJobService jobService) : ControllerBase
         return this.Ok(jobs);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     public async Task<ActionResult<JobDto>> GetJob(Guid id)
     {
         var job = await jobService.GetJobByIdAsync(id);
@@ -32,5 +32,12 @@ public class JobsController(IJobService jobService) : ControllerBase
         }
 
         return this.Ok(job);
+    }
+
+    [HttpGet("{q}")]
+    public async Task<ActionResult<JobDto>> GetJobBySearch(string q, int pageIndex = 1, int pageSize = 10)
+    {
+        var jobs = await jobService.GetJobBySearchAsync(q, pageIndex, pageSize);
+        return this.Ok(jobs);
     }
 }

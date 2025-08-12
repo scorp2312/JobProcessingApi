@@ -47,6 +47,42 @@ public class JobService(
         return job != null ? MapToDto(job) : null;
     }
 
+    public async Task<PaginatedList<JobDto>> GetJobBySearchAsync(string q, int pageIndex = 1, int pageSize = 20)
+    {
+        if (pageSize > 100)
+        {
+            pageSize = 100;
+        }
+
+        var query = context.Jobs.AsQueryable();
+        if (!string.IsNullOrEmpty(q))
+        {
+            var lowerQ = q.ToLower();
+            query = query.Where(job =>
+                job.Description != null && job.Description.ToLower().Contains(lowerQ));
+        }
+
+        int totalItems = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(j => j.CreatedAt)
+            .ThenBy(j => j.Id)
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .Select(job => new JobDto
+        {
+            Id = job.Id,
+            CreatedAt = job.CreatedAt,
+            Description = job.Description,
+            Status = job.Status.ToString(),
+            CompletedAt = job.CompletedAt,
+            Result = job.Result,
+        })
+            .ToListAsync();
+
+        return new PaginatedList<JobDto>(items, totalItems, pageIndex, pageSize);
+    }
+
     public async Task MarkJobAsInProgressAsync(Guid id)
     {
         var job = await context.Jobs.FindAsync(id);

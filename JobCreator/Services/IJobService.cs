@@ -1,6 +1,7 @@
 namespace JobCreator.Services;
 
 using JobCreator.DTOs;
+using JobCreator.Models;
 
 public interface IJobService
 {
@@ -9,6 +10,8 @@ public interface IJobService
     Task<List<JobDto>> GetAllJobsAsync();
 
     Task<JobDto?> GetJobByIdAsync(Guid id);
+
+    Task<PaginatedList<JobDto>> GetJobBySearchAsync(string q, int pageIndex, int pageSize);
 
     Task MarkJobAsInProgressAsync(Guid id);
 
