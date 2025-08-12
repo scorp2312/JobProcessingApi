@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-#nullable disable
+﻿#nullable disable
 
 namespace JobCreator.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     /// <inheritdoc />
     public partial class Init : Migration
     {
@@ -20,7 +20,7 @@ namespace JobCreator.Migrations
                     CompletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    Result = table.Column<string>(type: "text", nullable: true)
+                    Result = table.Column<string>(type: "text", nullable: true),
                 },
                 constraints: table =>
                 {

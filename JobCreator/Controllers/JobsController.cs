@@ -1,42 +1,36 @@
-﻿using JobCreator.DTOs;
+﻿namespace JobCreator.Controllers;
+
+using JobCreator.DTOs;
 using JobCreator.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace JobCreator.Controllers;
-
 [ApiController]
 [Route("api/[controller]")]
-public class JobsController : ControllerBase
+public class JobsController(IJobService jobService) : ControllerBase
 {
-    private readonly IJobService _jobService;
-
-    public JobsController(IJobService jobService)
-    {
-        _jobService = jobService;
-    }
-
     [HttpPost]
     public async Task<ActionResult<JobDto>> CreateJob([FromBody] CreateJobDto createJobDto)
     {
-        var job = await _jobService.CreateJobAsync(createJobDto);
-        return CreatedAtAction(nameof(GetJob), new { id = job.Id }, job);
+        var job = await jobService.CreateJobAsync(createJobDto);
+        return this.CreatedAtAction(nameof(this.GetJob), new { id = job.Id }, job);
     }
 
     [HttpGet]
     public async Task<ActionResult<List<JobDto>>> GetAllJobs()
     {
-        var jobs = await _jobService.GetAllJobsAsync();
-        return Ok(jobs);
+        var jobs = await jobService.GetAllJobsAsync();
+        return this.Ok(jobs);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<JobDto>> GetJob(Guid id)
     {
-        var job = await _jobService.GetJobByIdAsync(id);
+        var job = await jobService.GetJobByIdAsync(id);
         if (job == null)
         {
-            return NotFound();
+            return this.NotFound();
         }
-        return Ok(job);
+
+        return this.Ok(job);
     }
 }

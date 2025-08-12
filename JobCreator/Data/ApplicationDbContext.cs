@@ -1,15 +1,10 @@
-﻿using JobCreator.Models;
+﻿namespace JobCreator.Data;
+
+using JobCreator.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace JobCreator.Data;
-
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Job> Jobs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

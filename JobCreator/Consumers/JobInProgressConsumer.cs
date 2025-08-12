@@ -1,22 +1,15 @@
-using JobCreator.Services;
-using MassTransit;
-using Shared.Messages;
-
 namespace JobCreator.Consumers;
 
-public class JobInProgressConsumer : IConsumer<JobInProgressEvent>
+using JobCreator.Services;
+using MassTransit;
+using Shared.Messages.Events;
+
+public class JobInProgressConsumer(IJobService jobService) : IConsumer<JobInProgressEvent>
 {
-    private readonly IJobService _jobService;
-
-    public JobInProgressConsumer(IJobService jobService)
-    {
-        _jobService = jobService;
-    }
-
     public async Task Consume(ConsumeContext<JobInProgressEvent> context)
     {
         var message = context.Message;
-        
-        await _jobService.MarkJobAsInProgressAsync(message.JobId);
+
+        await jobService.MarkJobAsInProgressAsync(message.JobId);
     }
 }
