@@ -1,14 +1,5 @@
 ﻿namespace JobCreator.Models;
 
-public enum JobStatus
-{
-    Created = 0,
-
-    InProgress = 1,
-
-    Completed = 2,
-}
-
 public class Job
 {
     public Guid Id { get; set; }
@@ -17,7 +8,7 @@ public class Job
 
     public DateTime? CompletedAt { get; set; }
 
-    public JobStatus Status { get; set; }
+    public JobStatusEnum Status { get; set; }
 
     public string? Description { get; set; }
 

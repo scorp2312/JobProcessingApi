@@ -17,7 +17,7 @@ public class JobService(
         {
             Id = Guid.NewGuid(),
             CreatedAt = DateTime.UtcNow,
-            Status = JobStatus.Created,
+            Status = JobStatusEnum.Created,
             Description = createJobDto.Description,
         };
 
@@ -52,7 +52,7 @@ public class JobService(
         var job = await context.Jobs.FindAsync(id);
         if (job != null)
         {
-            job.Status = JobStatus.InProgress;
+            job.Status = JobStatusEnum.InProgress;
             await context.SaveChangesAsync();
         }
     }
@@ -62,7 +62,7 @@ public class JobService(
         var job = await context.Jobs.FindAsync(jobId);
         if (job != null)
         {
-            job.Status = JobStatus.Completed;
+            job.Status = JobStatusEnum.Completed;
             job.CompletedAt = completedAt;
             job.Result = result;
             await context.SaveChangesAsync();
