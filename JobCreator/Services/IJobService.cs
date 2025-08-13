@@ -10,6 +10,8 @@ public interface IJobService
 
     Task<JobDto?> GetJobByIdAsync(Guid id);
 
+    Task<PaginatedList<JobDto>> GetJobBySearchAsync(string q, int pageIndex, int pageSize);
+
     Task MarkJobAsInProgressAsync(Guid id);
 
     Task MarkJobAsCompletedAsync(Guid jobId, DateTime completedAt, string? result);
