@@ -69,8 +69,7 @@ public class JobService(
             .ThenBy(j => j.Id)
             .Skip((pageIndex - 1) * pageSize)
             .Take(pageSize)
-            .Select(job =>
-                new JobDto
+            .Select(job => new JobDto
             {
                 Id = job.Id,
                 CreatedAt = job.CreatedAt,
