@@ -1,6 +1,4 @@
-namespace JobCreator.Models;
-
-using System.Collections.Generic;
+namespace JobCreator.DTOs;
 
 public class PaginatedList<T>(List<T> items, int totalItems, int pageIndex, int pageSize)
 {

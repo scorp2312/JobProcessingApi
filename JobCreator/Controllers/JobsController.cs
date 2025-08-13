@@ -34,8 +34,11 @@ public class JobsController(IJobService jobService) : ControllerBase
         return this.Ok(job);
     }
 
-    [HttpGet("{q}")]
-    public async Task<ActionResult<JobDto>> GetJobBySearch(string q, int pageIndex = 1, int pageSize = 10)
+    [HttpGet("search")]
+    public async Task<ActionResult<JobDto>> GetJobBySearch(
+        [FromQuery] string q,
+        [FromQuery] int pageIndex = 1,
+        [FromQuery] int pageSize = 10)
     {
         var jobs = await jobService.GetJobBySearchAsync(q, pageIndex, pageSize);
         return this.Ok(jobs);

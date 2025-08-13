@@ -69,15 +69,17 @@ public class JobService(
             .ThenBy(j => j.Id)
             .Skip((pageIndex - 1) * pageSize)
             .Take(pageSize)
-            .Select(job => new JobDto
-        {
-            Id = job.Id,
-            CreatedAt = job.CreatedAt,
-            Description = job.Description,
-            Status = job.Status.ToString(),
-            CompletedAt = job.CompletedAt,
-            Result = job.Result,
-        })
+            .Select(job =>
+                new JobDto
+            {
+                Id = job.Id,
+                CreatedAt = job.CreatedAt,
+                Description = job.Description,
+                Status = job.Status.ToString(),
+                CompletedAt = job.CompletedAt,
+                Result = job.Result,
+            })
+            .AsNoTracking()
             .ToListAsync();
 
         return new PaginatedList<JobDto>(items, totalItems, pageIndex, pageSize);

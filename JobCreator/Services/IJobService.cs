@@ -1,7 +1,6 @@
 namespace JobCreator.Services;
 
 using JobCreator.DTOs;
-using JobCreator.Models;
 
 public interface IJobService
 {
