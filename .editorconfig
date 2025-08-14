@@ -1,0 +1,27 @@
+[*.cs]
+# Naming rules for private readonly fields
+dotnet_naming_rule.private_readonly_fields_should_be_underscore_prefixed.severity = warning
+dotnet_naming_rule.private_readonly_fields_should_be_underscore_prefixed.symbols = private_readonly_fields
+dotnet_naming_rule.private_readonly_fields_should_be_underscore_prefixed.style = underscore_prefix
+
+# Symbol specification for private readonly fields
+dotnet_naming_symbols.private_readonly_fields.applicable_kinds = field
+dotnet_naming_symbols.private_readonly_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_readonly_fields.required_modifiers = readonly
+
+# Naming style with underscore prefix
+dotnet_naming_style.underscore_prefix.required_prefix = _
+dotnet_naming_style.underscore_prefix.capitalization = camel_case
+
+# Additional naming rules for other private fields (optional)
+dotnet_naming_rule.private_fields_should_be_underscore_prefixed.severity = warning
+dotnet_naming_rule.private_fields_should_be_underscore_prefixed.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_underscore_prefixed.style = underscore_prefix
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+
+
+# Code style rules
+dotnet_style_readonly_field = true:warning

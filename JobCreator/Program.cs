@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IJobService, JobService>();
+builder.Services.AddScoped<JobService>();
 
 builder.Services.AddMassTransit(x =>
 {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
-public class JobsController(IJobService jobService) : ControllerBase
+public class JobsController(JobService jobService) : ControllerBase
 {
     [HttpPost]
     public async Task<ActionResult<JobDto>> CreateJob([FromBody] CreateJobDto createJobDto)
