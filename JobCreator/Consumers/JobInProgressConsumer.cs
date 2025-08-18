@@ -4,7 +4,7 @@ using JobCreator.Services;
 using MassTransit;
 using Shared.Messages.Events;
 
-public class JobInProgressConsumer(IJobService jobService) : IConsumer<JobInProgressEvent>
+public class JobInProgressConsumer(JobService jobService) : IConsumer<JobInProgressEvent>
 {
     public async Task Consume(ConsumeContext<JobInProgressEvent> context)
     {

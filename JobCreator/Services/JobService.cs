@@ -9,7 +9,7 @@ using Shared.Messages.Events;
 
 public class JobService(
     ApplicationDbContext context,
-    IPublishEndpoint publishEndpoint) : IJobService
+    IPublishEndpoint publishEndpoint)
 {
     public async Task<JobDto> CreateJobAsync(CreateJobDto createJobDto)
     {

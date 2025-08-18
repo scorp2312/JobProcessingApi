@@ -13,7 +13,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IJobService, JobService>();
+builder.Services.AddScoped<JobService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<QuestionService>();
 
 builder.Services.AddMassTransit(x =>
 {
@@ -50,6 +52,7 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     context.Database.Migrate();
+    await DataSeeder.SeedDataAsync(context);
 }
 
 app.Run();
