@@ -22,7 +22,7 @@ namespace JobCreator.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("JobCreator.Models.Category", b =>
+            modelBuilder.Entity("JobCreator.Models.CategoryEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace JobCreator.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("JobCreator.Models.Question", b =>
+            modelBuilder.Entity("JobCreator.Models.QuestionEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

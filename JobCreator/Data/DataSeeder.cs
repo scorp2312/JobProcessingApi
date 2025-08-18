@@ -11,11 +11,11 @@ public static class DataSeeder
             return;
         }
 
-        var categories = new List<Category>
+        var categories = new List<CategoryEntity>
         {
-            new Category { CategoryName = "C#", Id = 1 },
-            new Category { CategoryName = "БД", Id = 2 },
-            new Category { CategoryName = "Общее", Id = 3 },
+            new CategoryEntity { CategoryName = "C#", Id = 1 },
+            new CategoryEntity { CategoryName = "БД", Id = 2 },
+            new CategoryEntity { CategoryName = "Общее", Id = 3 },
         };
 
         await context.Categories.AddRangeAsync(categories);

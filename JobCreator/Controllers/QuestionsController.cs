@@ -15,11 +15,8 @@ public class QuestionsController(QuestionService questionService) : ControllerBa
         [FromQuery] int pageIndex = 1,
         [FromQuery] int pageSize = 10)
     {
-        var questions = await questionService
-            .FindAndPaginateQuestionsAsync(
-            categoryId,
-            pageIndex,
-            pageSize);
+        var questions = await questionService.FindAndPaginateQuestionsAsync(
+            categoryId, pageIndex, pageSize);
 
         return questions;
     }
@@ -58,7 +55,7 @@ public class QuestionsController(QuestionService questionService) : ControllerBa
         var questionToDelete = await questionService.FindQuestionByIdAsync(id);
         if (questionToDelete == null)
         {
-            return "Question not found";
+            return "QuestionEntity not found";
         }
 
         await questionService.DeleteQuestionAsync(id);

@@ -7,9 +7,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     public DbSet<Job> Jobs { get; set; }
 
-    public DbSet<Question> InterviewQuestions { get; set; }
+    public DbSet<QuestionEntity> InterviewQuestions { get; set; }
 
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<CategoryEntity> Categories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,21 +23,22 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.HasIndex(e => e.Status);
         });
 
-        modelBuilder.Entity<Question>(entity =>
+        modelBuilder.Entity<QuestionEntity>(entity =>
         {
             entity.HasKey(e => e.Id);
+            entity.Property<int>("CategoryId");
             entity.Property(e => e.QuestionText).IsRequired().HasMaxLength(500);
             entity.Property(e => e.Answer).HasMaxLength(10000);
 
             entity
-                .HasOne(e => e.Category)
+                .HasOne(e => e.CategoryEntity)
                 .WithMany()
-                .HasForeignKey("Id")
+                .HasForeignKey("CategoryId")
                 .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);
         });
 
-        modelBuilder.Entity<Category>(entity =>
+        modelBuilder.Entity<CategoryEntity>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.CategoryName).IsRequired().HasMaxLength(500);

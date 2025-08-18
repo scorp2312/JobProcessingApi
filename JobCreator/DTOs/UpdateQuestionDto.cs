@@ -1,14 +1,21 @@
 namespace JobCreator.DTOs;
 
+using System.ComponentModel.DataAnnotations;
 using JobCreator.Models;
 
 public class UpdateQuestionDto
 {
    public Guid Id { get; set; }
 
-   public string? Newquestion { get; set; }
+   [Required]
+   [MinLength(1)]
+   [MaxLength(500)]
+   public required string NewQuestion { get; set; }
 
-   public string? NewAnswer { get; set; }
+   [Required]
+   [MinLength(1)]
+   [MaxLength(10000)]
+   public required string NewAnswer { get; set; }
 
-   public Category? NewCategory { get; set; }
+   public required CategoryEntity NewCategoryEntity { get; set; }
 }

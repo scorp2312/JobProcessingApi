@@ -1,6 +1,6 @@
 namespace JobCreator.Models;
 
-public class Category
+public class CategoryEntity
 {
     public required int Id { get; set; }
 

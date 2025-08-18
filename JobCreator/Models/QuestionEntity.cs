@@ -1,9 +1,11 @@
-namespace JobCreator.DTOs;
+namespace JobCreator.Models;
 
 using System.ComponentModel.DataAnnotations;
 
-public class CreateQuestionDto
+public class QuestionEntity
 {
+    public required Guid Id { get; set; }
+
     [Required]
     [MinLength(1)]
     [MaxLength(500)]
@@ -14,5 +16,5 @@ public class CreateQuestionDto
     [MaxLength(10000)]
     public required string Answer { get; set; }
 
-    public required int CategoryId { get; set; }
+    public required CategoryEntity CategoryEntity { get; set; }
 }

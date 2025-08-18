@@ -15,15 +15,15 @@ public class QuestionService(
 
         if (category == null)
         {
-            throw new ArgumentException($"Provided category not found. Category Id: {createQuestionDto.CategoryId}");
+            throw new ArgumentException($"Provided categoryEntity not found. CategoryEntity Id: {createQuestionDto.CategoryId}");
         }
 
-        var question = new Question
+        var question = new QuestionEntity
             {
                 Id = Guid.NewGuid(),
                 QuestionText = createQuestionDto.QuestionText,
                 Answer = createQuestionDto.Answer,
-                Category = category,
+                CategoryEntity = category,
             };
 
         context.InterviewQuestions.Add(question);
@@ -35,7 +35,7 @@ public class QuestionService(
     public async Task<List<QuestionDto>> GetAllQuestionsAsync()
     {
         var questions = await context.InterviewQuestions
-            .Include(q => q.Category)
+            .Include(q => q.CategoryEntity)
             .OrderByDescending(q => q.Id)
             .AsNoTracking()
             .ToListAsync();
@@ -46,7 +46,7 @@ public class QuestionService(
     public async Task<QuestionDto?> FindQuestionByIdAsync(Guid id)
     {
         var question = await context.InterviewQuestions
-            .Include(q => q.Category)
+            .Include(q => q.CategoryEntity)
             .AsNoTracking()
             .FirstOrDefaultAsync(q => q.Id == id);
         if (question == null)
@@ -60,7 +60,7 @@ public class QuestionService(
     public async Task<QuestionDto?> DeleteQuestionAsync(Guid id)
     {
         var questionToDelete = await context.InterviewQuestions
-            .Include(q => q.Category)
+            .Include(q => q.CategoryEntity)
             .FirstOrDefaultAsync(q => q.Id == id);
         if (questionToDelete == null)
         {
@@ -80,12 +80,12 @@ public class QuestionService(
         }
 
         var query = context.InterviewQuestions
-            .Include(q => q.Category)
+            .Include(q => q.CategoryEntity)
             .AsQueryable();
 
         if (categoryId != 0)
         {
-            query = query.Where(q => q.Category.Id == categoryId);
+            query = query.Where(q => q.CategoryEntity.Id == categoryId);
         }
 
         int totalItems = await query.CountAsync();
@@ -99,11 +99,7 @@ public class QuestionService(
                 Id = question.Id,
                 QuestionText = question.QuestionText,
                 Answer = question.Answer,
-                Category = new CategoryDto
-                {
-                    Id = question.Category.Id,
-                    CategoryName = question.Category.CategoryName,
-                },
+                CategoryId = question.CategoryEntity.Id,
             })
             .AsNoTracking()
             .ToListAsync();
@@ -119,40 +115,25 @@ public class QuestionService(
             return null;
         }
 
-        if (data.Newquestion != null)
-        {
-            questionToChange.QuestionText = data.Newquestion;
-        }
+        questionToChange.QuestionText = data.NewQuestion;
 
-        if (data.NewAnswer != null)
-        {
-            questionToChange.Answer = data.NewAnswer;
-        }
+        questionToChange.Answer = data.NewAnswer;
 
-        if (data.NewCategory != null)
-        {
-            questionToChange.Category = data.NewCategory;
-        }
+        questionToChange.CategoryEntity = data.NewCategoryEntity;
 
         context.InterviewQuestions.Update(questionToChange);
         await context.SaveChangesAsync();
         return MapToDto(questionToChange);
     }
 
-    private static QuestionDto MapToDto(Question question)
+    private static QuestionDto MapToDto(QuestionEntity questionEntity)
     {
         return new QuestionDto
         {
-            Id = question.Id,
-            QuestionText = question.QuestionText,
-            Answer = question.Answer,
-            Category = question.Category == null
-                ? null
-                : new CategoryDto
-            {
-                Id = question.Category.Id,
-                CategoryName = question.Category.CategoryName,
-            },
+            Id = questionEntity.Id,
+            QuestionText = questionEntity.QuestionText,
+            Answer = questionEntity.Answer,
+            CategoryId = questionEntity.CategoryEntity.Id,
         };
     }
 }

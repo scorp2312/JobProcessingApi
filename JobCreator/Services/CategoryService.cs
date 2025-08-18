@@ -11,7 +11,7 @@ public class CategoryService(
     public async Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto createCategoryDto)
     {
         var newId = context.Categories.OrderByDescending(e => e.Id).First();
-        var category = new Category
+        var category = new CategoryEntity
         {
             Id = newId.Id + 1,
             CategoryName = createCategoryDto.CategoryName,
@@ -67,12 +67,12 @@ public class CategoryService(
         MapToDto(category);
     }
 
-    private static CategoryDto MapToDto(Category category)
+    private static CategoryDto MapToDto(CategoryEntity categoryEntity)
     {
         return new CategoryDto
         {
-            Id = category.Id,
-            CategoryName = category.CategoryName,
+            Id = categoryEntity.Id,
+            CategoryName = categoryEntity.CategoryName,
         };
     }
 }
