@@ -10,59 +10,58 @@ using Microsoft.AspNetCore.Mvc;
 public class QuestionsController(QuestionService questionService) : ControllerBase
 {
     [HttpGet("Find")]
-    public async Task<IActionResult> FindQuestions(
+    public async Task<PaginatedList<QuestionDto>> FindQuestionsAsync(
         [FromQuery] int categoryId,
         [FromQuery] int pageIndex = 1,
         [FromQuery] int pageSize = 10)
     {
-        var questions = await questionService.FindAndPaginateQuestions(
-                                                                                            categoryId,
-                                                                                            pageIndex,
-                                                                                            pageSize);
+        var questions = await questionService
+            .FindAndPaginateQuestionsAsync(
+            categoryId,
+            pageIndex,
+            pageSize);
 
-        return this.Ok(questions);
+        return questions;
     }
 
     [HttpPost("Create")]
-    public async Task<IActionResult> CreateQuestion([FromBody] CreateQuestionDto createQuestionDto)
+    public async Task<QuestionDto> CreateQuestionAsync([FromBody] CreateQuestionDto createQuestionDto)
     {
-        var question = await questionService.CreateQuestion(createQuestionDto);
-        return this.Ok(question);
+        var question = await questionService.CreateQuestionAsync(createQuestionDto);
+        return question;
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<QuestionDto>>> GetAllQuestions()
+    public async Task<List<QuestionDto>> GetAllQuestionsAsync()
     {
-        var questions = await questionService.GetAllQuestions();
-        return this.Ok(questions);
+        var questions = await questionService.GetAllQuestionsAsync();
+        return questions;
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<QuestionDto>> UpdateQuestion(
-        Guid id,
-        string? newquestion,
-        string? newanswer,
-        Category? newCategory)
+    [HttpPut("{id:guid}")]
+    public async Task<QuestionDto?> UpdateQuestionAsync(
+        [FromRoute] Guid id,
+        [FromBody] UpdateQuestionDto data)
     {
-        var changedQuestion = await questionService.UpdateQuestion(id, newquestion, newanswer, newCategory);
+        var changedQuestion = await questionService.UpdateQuestionAsync(id, data);
         if (changedQuestion == null)
         {
-            return this.NotFound();
+            throw new ArgumentException($"Вопрос с Id: {id}. не найден");
         }
 
-        return this.Ok(changedQuestion);
+        return changedQuestion;
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<QuestionDto>> DeleteQuestion(Guid id)
+    [HttpDelete("{id:guid}")]
+    public async Task<string> DeleteQuestionAsync(Guid id)
     {
-        var questionToDelete = await questionService.FindQuestionById(id);
+        var questionToDelete = await questionService.FindQuestionByIdAsync(id);
         if (questionToDelete == null)
         {
-            return this.NotFound();
+            return "Question not found";
         }
 
-        await questionService.DeleteQuestion(id);
-        return this.Ok();
+        await questionService.DeleteQuestionAsync(id);
+        return $"Удален вопрос: {id} {questionToDelete.QuestionText}";
     }
 }

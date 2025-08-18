@@ -5,34 +5,35 @@ using JobCreator.Services;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/interview-questions/categories")]
 public class CategoriesController(CategoryService categoryService) : ControllerBase
 {
      [HttpPost]
-     public async Task<ActionResult<CategoryDto>> CreateCategoryAsync([FromBody] CreateCategoryDto createCategoryDto)
+     public async Task<CategoryDto> CreateCategoryAsync([FromBody] CreateCategoryDto createCategoryDto)
      {
          var category = await categoryService.CreateInQCategoryAsync(createCategoryDto);
-         return this.Ok(category);
+         return category;
      }
 
      [HttpGet]
-     public async Task<ActionResult<List<CategoryDto>>> GetAllCategoriesAsync()
+     public async Task<List<CategoryDto>> GetAllCategoriesAsync()
     {
         var categories = await categoryService.GetAllInQCategoryAsync();
-        return this.Ok(categories);
+        return categories;
     }
 
-     [HttpPut("{categoryId}")]
-     public async Task<ActionResult<CategoryDto>> UpdateCategory(int categoryId, string newCategory)
+     [HttpPut("{categoryId:int}")]
+     public async Task<string> UpdateCategoryAsync(int categoryId, string newCategory)
     {
         await categoryService.ChangeInQCategoryAsync(categoryId, newCategory);
-        return this.Ok();
+
+        return $"{categoryId} {newCategory}";
     }
 
-     [HttpDelete("{categoryId}")]
-     public async Task<ActionResult> DeleteCategory(int categoryId)
+     [HttpDelete("{categoryId:int}")]
+     public async Task<string> DeleteCategoryAsync(int categoryId)
     {
-        await categoryService.DeleteCategory(categoryId);
-        return this.Ok();
+        await categoryService.DeleteCategoryAsync(categoryId);
+        return $"Удалена категория {categoryId}";
     }
 }

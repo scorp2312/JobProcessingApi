@@ -12,16 +12,6 @@ namespace JobCreator.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Result",
-                table: "Jobs",
-                type: "character varying(1000)",
-                maxLength: 1000,
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -51,13 +41,13 @@ namespace JobCreator.Migrations
                         name: "FK_InterviewQuestions_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "CategoryId");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_InterviewQuestions_CategoryId",
                 table: "InterviewQuestions",
-                column: "CategoryId");
+                column: "Id");
         }
 
         /// <inheritdoc />

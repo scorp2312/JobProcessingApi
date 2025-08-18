@@ -24,18 +24,18 @@ namespace JobCreator.Migrations
 
             modelBuilder.Entity("JobCreator.Models.Category", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("CategoryId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("Categories");
                 });
@@ -50,7 +50,7 @@ namespace JobCreator.Migrations
                         .HasMaxLength(10000)
                         .HasColumnType("character varying(10000)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Id")
                         .HasColumnType("integer");
 
                     b.Property<string>("QuestionText")
@@ -60,7 +60,7 @@ namespace JobCreator.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("Id");
 
                     b.ToTable("InterviewQuestions");
                 });
@@ -99,7 +99,7 @@ namespace JobCreator.Migrations
                 {
                     b.HasOne("JobCreator.Models.CategoryName", "CategoryName")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

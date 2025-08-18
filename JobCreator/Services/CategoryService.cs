@@ -10,10 +10,10 @@ public class CategoryService(
 {
     public async Task<CategoryDto> CreateInQCategoryAsync(CreateCategoryDto createCategoryDto)
     {
-        var newId = context.Categories.OrderByDescending(e => e.CategoryId).First();
+        var newId = context.Categories.OrderByDescending(e => e.Id).First();
         var category = new Category
         {
-            CategoryId = newId.CategoryId + 1,
+            Id = newId.Id + 1,
             CategoryName = createCategoryDto.CategoryName,
         };
 
@@ -26,17 +26,18 @@ public class CategoryService(
     public async Task<List<CategoryDto>> GetAllInQCategoryAsync()
     {
         var categories = await context.Categories
-            .OrderBy(c => c.CategoryId)
+            .OrderBy(c => c.Id)
+            .AsNoTracking()
             .ToListAsync();
         return categories.Select(MapToDto).ToList();
     }
 
-    public async Task ChangeInQCategoryAsync(int categoryId, string newCategory)
+    public async Task ChangeInQCategoryAsync(int id, string newCategory)
     {
-        var category = await context.Categories.FindAsync(categoryId);
+        var category = await context.Categories.FindAsync(id);
         if (category == null)
         {
-            return;
+            throw new ArgumentException($"Категория с айди: {id} не найдена");
         }
 
         category.CategoryName = newCategory;
@@ -46,16 +47,19 @@ public class CategoryService(
 
     public async Task<CategoryDto?> FindCategoryById(int id)
     {
-        var category = await context.Categories.FirstOrDefaultAsync(c => c.CategoryId == id);
+        var category = await context.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
+
         return category == null ? null : MapToDto(category);
     }
 
-    public async Task DeleteCategory(int id)
+    public async Task DeleteCategoryAsync(int id)
     {
-        var category = await context.Categories.FirstOrDefaultAsync(c => c.CategoryId == id);
+        var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == id);
         if (category == null)
         {
-            return;
+            throw new ArgumentException($"Категория с айди: {id} не найдена");
         }
 
         context.Categories.Remove(category);
@@ -67,7 +71,7 @@ public class CategoryService(
     {
         return new CategoryDto
         {
-            CategoryId = category.CategoryId,
+            Id = category.Id,
             CategoryName = category.CategoryName,
         };
     }

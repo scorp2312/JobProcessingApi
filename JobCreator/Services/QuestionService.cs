@@ -8,14 +8,14 @@ using Microsoft.EntityFrameworkCore;
 public class QuestionService(
     ApplicationDbContext context)
 {
-    public async Task<QuestionDto> CreateQuestion(CreateQuestionDto createQuestionDto)
+    public async Task<QuestionDto> CreateQuestionAsync(CreateQuestionDto createQuestionDto)
     {
         var category = await context.Categories
-            .FirstOrDefaultAsync(c => c.CategoryId == createQuestionDto.CategoryId);
+            .FirstOrDefaultAsync(c => c.Id == createQuestionDto.CategoryId);
 
         if (category == null)
         {
-            throw new ArgumentException($"CategoryName with ID {createQuestionDto.CategoryId} not found");
+            throw new ArgumentException($"Provided category not found. Category Id: {createQuestionDto.CategoryId}");
         }
 
         var question = new Question
@@ -32,19 +32,23 @@ public class QuestionService(
         return MapToDto(question);
     }
 
-    public async Task<List<QuestionDto>> GetAllQuestions()
+    public async Task<List<QuestionDto>> GetAllQuestionsAsync()
     {
         var questions = await context.InterviewQuestions
             .Include(q => q.Category)
             .OrderByDescending(q => q.Id)
+            .AsNoTracking()
             .ToListAsync();
 
         return questions.Select(MapToDto).ToList();
     }
 
-    public async Task<QuestionDto?> FindQuestionById(Guid id)
+    public async Task<QuestionDto?> FindQuestionByIdAsync(Guid id)
     {
-        var question = await context.InterviewQuestions.FirstOrDefaultAsync(q => q.Id == id);
+        var question = await context.InterviewQuestions
+            .Include(q => q.Category)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(q => q.Id == id);
         if (question == null)
         {
             return null;
@@ -53,7 +57,7 @@ public class QuestionService(
         return MapToDto(question);
     }
 
-    public async Task<QuestionDto?> DeleteQuestion(Guid id)
+    public async Task<QuestionDto?> DeleteQuestionAsync(Guid id)
     {
         var questionToDelete = await context.InterviewQuestions
             .Include(q => q.Category)
@@ -68,7 +72,7 @@ public class QuestionService(
         return MapToDto(questionToDelete);
     }
 
-    public async Task<PaginatedList<QuestionDto>> FindAndPaginateQuestions(int categoryId, int pageIndex = 1, int pageSize = 20)
+    public async Task<PaginatedList<QuestionDto>> FindAndPaginateQuestionsAsync(int categoryId, int pageIndex = 1, int pageSize = 20)
     {
         if (pageSize > 100)
         {
@@ -81,7 +85,7 @@ public class QuestionService(
 
         if (categoryId != 0)
         {
-            query = query.Where(q => q.Category.CategoryId == categoryId);
+            query = query.Where(q => q.Category.Id == categoryId);
         }
 
         int totalItems = await query.CountAsync();
@@ -97,7 +101,7 @@ public class QuestionService(
                 Answer = question.Answer,
                 Category = new CategoryDto
                 {
-                    CategoryId = question.Category.CategoryId,
+                    Id = question.Category.Id,
                     CategoryName = question.Category.CategoryName,
                 },
             })
@@ -107,7 +111,7 @@ public class QuestionService(
         return new PaginatedList<QuestionDto>(items, totalItems, pageIndex, pageSize);
     }
 
-    public async Task<QuestionDto?> UpdateQuestion(Guid id, string? newQuestion, string? newAnswer, Category? newCategory)
+    public async Task<QuestionDto?> UpdateQuestionAsync(Guid id, UpdateQuestionDto data)
     {
         var questionToChange = await context.InterviewQuestions.FirstOrDefaultAsync(q => q.Id == id);
         if (questionToChange == null)
@@ -115,19 +119,19 @@ public class QuestionService(
             return null;
         }
 
-        if (newQuestion != null)
+        if (data.Newquestion != null)
         {
-            questionToChange.QuestionText = newQuestion;
+            questionToChange.QuestionText = data.Newquestion;
         }
 
-        if (newAnswer != null)
+        if (data.NewAnswer != null)
         {
-            questionToChange.Answer = newAnswer;
+            questionToChange.Answer = data.NewAnswer;
         }
 
-        if (newCategory != null)
+        if (data.NewCategory != null)
         {
-            questionToChange.Category = newCategory;
+            questionToChange.Category = data.NewCategory;
         }
 
         context.InterviewQuestions.Update(questionToChange);
@@ -146,7 +150,7 @@ public class QuestionService(
                 ? null
                 : new CategoryDto
             {
-                CategoryId = question.Category.CategoryId,
+                Id = question.Category.Id,
                 CategoryName = question.Category.CategoryName,
             },
         };

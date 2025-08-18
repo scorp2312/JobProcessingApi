@@ -13,9 +13,9 @@ public static class DataSeeder
 
         var categories = new List<Category>
         {
-            new Category { CategoryName = "C#", CategoryId = 1 },
-            new Category { CategoryName = "БД", CategoryId = 2 },
-            new Category { CategoryName = "Общее", CategoryId = 3 },
+            new Category { CategoryName = "C#", Id = 1 },
+            new Category { CategoryName = "БД", Id = 2 },
+            new Category { CategoryName = "Общее", Id = 3 },
         };
 
         await context.Categories.AddRangeAsync(categories);

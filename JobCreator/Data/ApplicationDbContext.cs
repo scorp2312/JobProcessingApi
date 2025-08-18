@@ -32,14 +32,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity
                 .HasOne(e => e.Category)
                 .WithMany()
-                .HasForeignKey("CategoryId")
+                .HasForeignKey("Id")
                 .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);
         });
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.CategoryId);
+            entity.HasKey(e => e.Id);
             entity.Property(e => e.CategoryName).IsRequired().HasMaxLength(500);
         });
     }
