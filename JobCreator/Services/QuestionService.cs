@@ -15,16 +15,16 @@ public class QuestionService(
 
         if (category == null)
         {
-            throw new ArgumentException($"Provided categoryEntity not found. CategoryEntity Id: {createQuestionDto.CategoryId}");
+            throw new ArgumentException($"Provided category not found. Category Id: {createQuestionDto.CategoryId}");
         }
 
         var question = new QuestionEntity
-            {
-                Id = Guid.NewGuid(),
-                QuestionText = createQuestionDto.QuestionText,
-                Answer = createQuestionDto.Answer,
-                CategoryEntity = category,
-            };
+        {
+            Id = Guid.NewGuid(),
+            QuestionText = createQuestionDto.QuestionText,
+            Answer = createQuestionDto.Answer,
+            CategoryEntity = category,
+        };
 
         context.InterviewQuestions.Add(question);
         await context.SaveChangesAsync();
@@ -57,19 +57,19 @@ public class QuestionService(
         return MapToDto(question);
     }
 
-    public async Task<QuestionDto?> DeleteQuestionAsync(Guid id)
+    public async Task<bool> DeleteQuestionAsync(Guid id)
     {
         var questionToDelete = await context.InterviewQuestions
             .Include(q => q.CategoryEntity)
             .FirstOrDefaultAsync(q => q.Id == id);
         if (questionToDelete == null)
         {
-            return null;
+            return false;
         }
 
         context.InterviewQuestions.Remove(questionToDelete);
         await context.SaveChangesAsync();
-        return MapToDto(questionToDelete);
+        return true;
     }
 
     public async Task<PaginatedList<QuestionDto>> FindAndPaginateQuestionsAsync(int categoryId, int pageIndex = 1, int pageSize = 20)
@@ -107,23 +107,21 @@ public class QuestionService(
         return new PaginatedList<QuestionDto>(items, totalItems, pageIndex, pageSize);
     }
 
-    public async Task<QuestionDto?> UpdateQuestionAsync(Guid id, UpdateQuestionDto data)
+    public async Task<bool> UpdateQuestionAsync(Guid id, UpdateQuestionDto data)
     {
         var questionToChange = await context.InterviewQuestions.FirstOrDefaultAsync(q => q.Id == id);
         if (questionToChange == null)
         {
-            return null;
+            return false;
         }
 
         questionToChange.QuestionText = data.NewQuestion;
-
         questionToChange.Answer = data.NewAnswer;
-
         questionToChange.CategoryEntity = data.NewCategoryEntity;
 
         context.InterviewQuestions.Update(questionToChange);
         await context.SaveChangesAsync();
-        return MapToDto(questionToChange);
+        return true;
     }
 
     private static QuestionDto MapToDto(QuestionEntity questionEntity)

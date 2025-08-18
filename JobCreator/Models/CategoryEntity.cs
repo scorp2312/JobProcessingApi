@@ -2,7 +2,7 @@ namespace JobCreator.Models;
 
 public class CategoryEntity
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
 
-    public required string? CategoryName { get; set; }
+    public string? CategoryName { get; set; }
 }

@@ -36,29 +36,19 @@ public class QuestionsController(QuestionService questionService) : ControllerBa
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<QuestionDto?> UpdateQuestionAsync(
+    public async Task<IActionResult> UpdateQuestionAsync(
         [FromRoute] Guid id,
         [FromBody] UpdateQuestionDto data)
     {
-        var changedQuestion = await questionService.UpdateQuestionAsync(id, data);
-        if (changedQuestion == null)
-        {
-            throw new ArgumentException($"Вопрос с Id: {id}. не найден");
-        }
+        var changed = await questionService.UpdateQuestionAsync(id, data);
 
-        return changedQuestion;
+        return changed ? this.Ok() : this.NotFound();
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<string> DeleteQuestionAsync(Guid id)
+    public async Task<IActionResult> DeleteQuestionAsync(Guid id)
     {
-        var questionToDelete = await questionService.FindQuestionByIdAsync(id);
-        if (questionToDelete == null)
-        {
-            return "QuestionEntity not found";
-        }
-
-        await questionService.DeleteQuestionAsync(id);
-        return $"Удален вопрос: {id} {questionToDelete.QuestionText}";
+        var deleted = await questionService.DeleteQuestionAsync(id);
+        return deleted ? this.Ok() : this.NotFound();
     }
 }

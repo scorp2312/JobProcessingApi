@@ -13,7 +13,6 @@ public class CategoryService(
         var newId = context.Categories.OrderByDescending(e => e.Id).First();
         var category = new CategoryEntity
         {
-            Id = newId.Id + 1,
             CategoryName = createCategoryDto.CategoryName,
         };
 
@@ -32,17 +31,18 @@ public class CategoryService(
         return categories.Select(MapToDto).ToList();
     }
 
-    public async Task ChangeCategoryAsync(int id, string newCategory)
+    public async Task<bool> ChangeCategoryAsync(int id, string newCategory)
     {
         var category = await context.Categories.FindAsync(id);
         if (category == null)
         {
-            throw new ArgumentException($"Категория с айди: {id} не найдена");
+            return false;
         }
 
         category.CategoryName = newCategory;
         await context.SaveChangesAsync();
         MapToDto(category);
+        return true;
     }
 
     public async Task<CategoryDto?> FindCategoryById(int id)
@@ -54,17 +54,18 @@ public class CategoryService(
         return category == null ? null : MapToDto(category);
     }
 
-    public async Task DeleteCategoryAsync(int categoryId)
+    public async Task<bool> DeleteCategoryAsync(int categoryId)
     {
         var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
         if (category == null)
         {
-            throw new ArgumentException($"Категория с айди: {categoryId} не найдена");
+            return false;
         }
 
         context.Categories.Remove(category);
         await context.SaveChangesAsync();
         MapToDto(category);
+        return true;
     }
 
     private static CategoryDto MapToDto(CategoryEntity categoryEntity)

@@ -23,17 +23,16 @@ public class CategoriesController(CategoryService categoryService) : ControllerB
     }
 
      [HttpPut("{categoryId:int}")]
-     public async Task<string> UpdateCategoryAsync(int categoryId, string newCategory)
+     public async Task<IActionResult> UpdateCategoryAsync(int categoryId, string newCategory)
     {
-        await categoryService.ChangeCategoryAsync(categoryId, newCategory);
-
-        return $"{categoryId} {newCategory}";
+        var updated = await categoryService.ChangeCategoryAsync(categoryId, newCategory);
+        return updated ? this.Ok() : this.NotFound();
     }
 
      [HttpDelete("{categoryId:int}")]
-     public async Task<string> DeleteCategoryAsync(int categoryId)
+     public async Task<IActionResult> DeleteCategoryAsync(int categoryId)
     {
-        await categoryService.DeleteCategoryAsync(categoryId);
-        return $"Удалена категория {categoryId}";
+        var deleted = await categoryService.DeleteCategoryAsync(categoryId);
+        return deleted ? this.Ok() : this.NotFound();
     }
 }
