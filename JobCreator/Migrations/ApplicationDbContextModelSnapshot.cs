@@ -40,31 +40,6 @@ namespace JobCreator.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("JobCreator.Models.QuestionEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Answer")
-                        .HasMaxLength(10000)
-                        .HasColumnType("character varying(10000)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("QuestionText")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id");
-
-                    b.ToTable("InterviewQuestions");
-                });
-
             modelBuilder.Entity("JobCreator.Models.Job", b =>
                 {
                     b.Property<Guid>("Id")
@@ -95,15 +70,41 @@ namespace JobCreator.Migrations
                     b.ToTable("Jobs");
                 });
 
-            modelBuilder.Entity("JobCreator.Models.QuestionText", b =>
+            modelBuilder.Entity("JobCreator.Models.QuestionEntity", b =>
                 {
-                    b.HasOne("JobCreator.Models.CategoryName", "CategoryName")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasMaxLength(10000)
+                        .HasColumnType("character varying(10000)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("InterviewQuestions");
+                });
+
+            modelBuilder.Entity("JobCreator.Models.QuestionEntity", b =>
+                {
+                    b.HasOne("JobCreator.Models.CategoryEntity", "CategoryEntity")
                         .WithMany()
-                        .HasForeignKey("Id")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("CategoryName");
+                    b.Navigation("CategoryEntity");
                 });
 #pragma warning restore 612, 618
         }
