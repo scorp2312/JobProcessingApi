@@ -23,9 +23,9 @@ public class CategoriesController(CategoryService categoryService) : ControllerB
     }
 
      [HttpPut("{categoryId:int}")]
-     public async Task<IActionResult> UpdateCategoryAsync(int categoryId, string newCategory)
+     public async Task<IActionResult> UpdateCategoryAsync(int categoryId, string newCategoryName)
     {
-        var updated = await categoryService.ChangeCategoryAsync(categoryId, newCategory);
+        var updated = await categoryService.UpdateCategoryAsync(categoryId, newCategoryName);
         return updated ? this.Ok() : this.NotFound();
     }
 

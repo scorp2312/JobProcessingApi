@@ -10,7 +10,6 @@ public class CategoryService(
 {
     public async Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto createCategoryDto)
     {
-        var newId = context.Categories.OrderByDescending(e => e.Id).First();
         var category = new CategoryEntity
         {
             CategoryName = createCategoryDto.CategoryName,
@@ -31,7 +30,7 @@ public class CategoryService(
         return categories.Select(MapToDto).ToList();
     }
 
-    public async Task<bool> ChangeCategoryAsync(int id, string newCategory)
+    public async Task<bool> UpdateCategoryAsync(int id, string newCategory)
     {
         var category = await context.Categories.FindAsync(id);
         if (category == null)
@@ -41,7 +40,6 @@ public class CategoryService(
 
         category.CategoryName = newCategory;
         await context.SaveChangesAsync();
-        MapToDto(category);
         return true;
     }
 
@@ -64,7 +62,6 @@ public class CategoryService(
 
         context.Categories.Remove(category);
         await context.SaveChangesAsync();
-        MapToDto(category);
         return true;
     }
 
