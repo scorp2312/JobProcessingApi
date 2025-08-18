@@ -7,9 +7,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     public DbSet<Job> Jobs { get; set; }
 
-    public DbSet<InterviewQuestion> InterviewQuestions { get; set; }
+    public DbSet<InQuestion> InterviewQuestions { get; set; }
 
-    public DbSet<InterviewQuestionCategory> Categories { get; set; }
+    public DbSet<InQCategory> Categories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,7 +23,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.HasIndex(e => e.Status);
         });
 
-        modelBuilder.Entity<InterviewQuestion>(entity =>
+        modelBuilder.Entity<InQuestion>(entity =>
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Question).IsRequired().HasMaxLength(500);
@@ -37,10 +37,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 .OnDelete(DeleteBehavior.NoAction);
         });
 
-        modelBuilder.Entity<InterviewQuestionCategory>(entity =>
+        modelBuilder.Entity<InQCategory>(entity =>
         {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Category).IsRequired().HasMaxLength(500);
+            entity.HasKey(e => e.CategoryId);
+            entity.Property(e => e.CategoryName).IsRequired().HasMaxLength(500);
         });
     }
 }
