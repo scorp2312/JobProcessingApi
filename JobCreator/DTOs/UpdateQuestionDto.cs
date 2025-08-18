@@ -17,5 +17,5 @@ public class UpdateQuestionDto
    [MaxLength(10000)]
    public required string NewAnswer { get; set; }
 
-   public required CategoryEntity NewCategoryEntity { get; set; }
+   public required int CategoryId { get; set; }
 }

@@ -109,7 +109,9 @@ public class QuestionService(
 
     public async Task<bool> UpdateQuestionAsync(Guid id, UpdateQuestionDto data)
     {
-        var questionToChange = await context.InterviewQuestions.FirstOrDefaultAsync(q => q.Id == id);
+        var questionToChange = await context.InterviewQuestions
+            .Include(q => q.CategoryEntity)
+            .FirstOrDefaultAsync(q => q.Id == id);
         if (questionToChange == null)
         {
             return false;
@@ -117,21 +119,28 @@ public class QuestionService(
 
         questionToChange.QuestionText = data.NewQuestion;
         questionToChange.Answer = data.NewAnswer;
-        questionToChange.CategoryEntity = data.NewCategoryEntity;
+        if (data.CategoryId > 0)
+        {
+            var category = await context.Categories.FindAsync(data.CategoryId);
+            if (category != null)
+            {
+                questionToChange.CategoryEntity = category;
+            }
+        }
 
         context.InterviewQuestions.Update(questionToChange);
         await context.SaveChangesAsync();
         return true;
-    }
+        }
 
     private static QuestionDto MapToDto(QuestionEntity questionEntity)
-    {
-        return new QuestionDto
         {
-            Id = questionEntity.Id,
-            QuestionText = questionEntity.QuestionText,
-            Answer = questionEntity.Answer,
-            CategoryId = questionEntity.CategoryEntity.Id,
-        };
-    }
+            return new QuestionDto
+            {
+                Id = questionEntity.Id,
+                QuestionText = questionEntity.QuestionText,
+                Answer = questionEntity.Answer,
+                CategoryId = questionEntity.CategoryEntity.Id,
+            };
+        }
 }
