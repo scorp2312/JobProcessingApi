@@ -11,21 +11,21 @@ public class CategoriesController(CategoryService categoryService) : ControllerB
      [HttpPost]
      public async Task<CategoryDto> CreateCategoryAsync([FromBody] CreateCategoryDto createCategoryDto)
      {
-         var category = await categoryService.CreateInQCategoryAsync(createCategoryDto);
+         var category = await categoryService.CreateCategoryAsync(createCategoryDto);
          return category;
      }
 
      [HttpGet]
      public async Task<List<CategoryDto>> GetAllCategoriesAsync()
     {
-        var categories = await categoryService.GetAllInQCategoryAsync();
+        var categories = await categoryService.GetAllCategoriesAsync();
         return categories;
     }
 
      [HttpPut("{categoryId:int}")]
      public async Task<string> UpdateCategoryAsync(int categoryId, string newCategory)
     {
-        await categoryService.ChangeInQCategoryAsync(categoryId, newCategory);
+        await categoryService.ChangeCategoryAsync(categoryId, newCategory);
 
         return $"{categoryId} {newCategory}";
     }

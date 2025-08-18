@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 public class CategoryService(
     ApplicationDbContext context)
 {
-    public async Task<CategoryDto> CreateInQCategoryAsync(CreateCategoryDto createCategoryDto)
+    public async Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto createCategoryDto)
     {
         var newId = context.Categories.OrderByDescending(e => e.Id).First();
         var category = new Category
@@ -23,7 +23,7 @@ public class CategoryService(
         return MapToDto(category);
     }
 
-    public async Task<List<CategoryDto>> GetAllInQCategoryAsync()
+    public async Task<List<CategoryDto>> GetAllCategoriesAsync()
     {
         var categories = await context.Categories
             .OrderBy(c => c.Id)
@@ -32,7 +32,7 @@ public class CategoryService(
         return categories.Select(MapToDto).ToList();
     }
 
-    public async Task ChangeInQCategoryAsync(int id, string newCategory)
+    public async Task ChangeCategoryAsync(int id, string newCategory)
     {
         var category = await context.Categories.FindAsync(id);
         if (category == null)
@@ -54,12 +54,12 @@ public class CategoryService(
         return category == null ? null : MapToDto(category);
     }
 
-    public async Task DeleteCategoryAsync(int id)
+    public async Task DeleteCategoryAsync(int categoryId)
     {
-        var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == id);
+        var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
         if (category == null)
         {
-            throw new ArgumentException($"Категория с айди: {id} не найдена");
+            throw new ArgumentException($"Категория с айди: {categoryId} не найдена");
         }
 
         context.Categories.Remove(category);
