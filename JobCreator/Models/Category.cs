@@ -1,6 +1,6 @@
 namespace JobCreator.Models;
 
-public class InQCategory
+public class Category
 {
     public required int CategoryId { get; set; }
 

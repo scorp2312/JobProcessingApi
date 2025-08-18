@@ -22,7 +22,7 @@ namespace JobCreator.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("JobCreator.Models.InQCategory", b =>
+            modelBuilder.Entity("JobCreator.Models.Category", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace JobCreator.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("JobCreator.Models.InQuestion", b =>
+            modelBuilder.Entity("JobCreator.Models.Question", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace JobCreator.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Question")
+                    b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
@@ -95,15 +95,15 @@ namespace JobCreator.Migrations
                     b.ToTable("Jobs");
                 });
 
-            modelBuilder.Entity("JobCreator.Models.InQuestion", b =>
+            modelBuilder.Entity("JobCreator.Models.QuestionText", b =>
                 {
-                    b.HasOne("JobCreator.Models.InQCategory", "Category")
+                    b.HasOne("JobCreator.Models.CategoryName", "CategoryName")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("CategoryName");
                 });
 #pragma warning restore 612, 618
         }

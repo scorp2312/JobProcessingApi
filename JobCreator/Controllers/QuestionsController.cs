@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
-public class InQuestionController(InQService inQService) : ControllerBase
+public class QuestionsController(QuestionService questionService) : ControllerBase
 {
     [HttpGet("Find")]
     public async Task<IActionResult> FindQuestions(
@@ -15,7 +15,7 @@ public class InQuestionController(InQService inQService) : ControllerBase
         [FromQuery] int pageIndex = 1,
         [FromQuery] int pageSize = 10)
     {
-        var questions = await inQService.FindAndPaginateQuestions(
+        var questions = await questionService.FindAndPaginateQuestions(
                                                                                             categoryId,
                                                                                             pageIndex,
                                                                                             pageSize);
@@ -24,27 +24,27 @@ public class InQuestionController(InQService inQService) : ControllerBase
     }
 
     [HttpPost("Create")]
-    public async Task<IActionResult> CreateQuestion([FromBody] CreateInQuestionDto createInQuestionDto)
+    public async Task<IActionResult> CreateQuestion([FromBody] CreateQuestionDto createQuestionDto)
     {
-        var question = await inQService.CreateQuestion(createInQuestionDto);
+        var question = await questionService.CreateQuestion(createQuestionDto);
         return this.Ok(question);
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllQuestions()
+    public async Task<ActionResult<List<QuestionDto>>> GetAllQuestions()
     {
-        var questions = await inQService.GetAllQuestions();
+        var questions = await questionService.GetAllQuestions();
         return this.Ok(questions);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<InQuestionDto>> UpdateQuestion(
+    public async Task<ActionResult<QuestionDto>> UpdateQuestion(
         Guid id,
         string? newquestion,
         string? newanswer,
-        InQCategory? newCategory)
+        Category? newCategory)
     {
-        var changedQuestion = await inQService.UpdateQuestion(id, newquestion, newanswer, newCategory);
+        var changedQuestion = await questionService.UpdateQuestion(id, newquestion, newanswer, newCategory);
         if (changedQuestion == null)
         {
             return this.NotFound();
@@ -54,15 +54,15 @@ public class InQuestionController(InQService inQService) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<InQuestionDto>> DeleteQuestion(Guid id)
+    public async Task<ActionResult<QuestionDto>> DeleteQuestion(Guid id)
     {
-        var questionToDelete = await inQService.FindQuestionById(id);
+        var questionToDelete = await questionService.FindQuestionById(id);
         if (questionToDelete == null)
         {
             return this.NotFound();
         }
 
-        await inQService.DeleteQuestion(id);
-        return this.Ok($"Удален вопрос: {questionToDelete.Id} {questionToDelete.Question} ");
+        await questionService.DeleteQuestion(id);
+        return this.Ok();
     }
 }

@@ -25,7 +25,7 @@ namespace JobCreator.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("JobCreator.Models.InQCategory", b =>
+            modelBuilder.Entity("JobCreator.Models.Category", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace JobCreator.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("JobCreator.Models.InQuestion", b =>
+            modelBuilder.Entity("JobCreator.Models.Question", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace JobCreator.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Question")
+                    b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");

@@ -5,16 +5,16 @@ using JobCreator.DTOs;
 using JobCreator.Models;
 using Microsoft.EntityFrameworkCore;
 
-public class InQCategoryService(
+public class CategoryService(
     ApplicationDbContext context)
 {
-    public async Task<InQCategoryDto> CreateInQCategoryAsync(CreateInQCategoryDto createInQCategoryDto)
+    public async Task<CategoryDto> CreateInQCategoryAsync(CreateCategoryDto createCategoryDto)
     {
         var newId = context.Categories.OrderByDescending(e => e.CategoryId).First();
-        var category = new InQCategory
+        var category = new Category
         {
-            CategoryId = newId.CategoryId,
-            CategoryName = createInQCategoryDto.Category,
+            CategoryId = newId.CategoryId + 1,
+            CategoryName = createCategoryDto.CategoryName,
         };
 
         context.Categories.Add(category);
@@ -23,10 +23,10 @@ public class InQCategoryService(
         return MapToDto(category);
     }
 
-    public async Task<List<InQCategoryDto>> GetAllInQCategoryAsync()
+    public async Task<List<CategoryDto>> GetAllInQCategoryAsync()
     {
         var categories = await context.Categories
-            .OrderBy(c => c.CategoryName)
+            .OrderBy(c => c.CategoryId)
             .ToListAsync();
         return categories.Select(MapToDto).ToList();
     }
@@ -44,7 +44,7 @@ public class InQCategoryService(
         MapToDto(category);
     }
 
-    public async Task<InQCategoryDto?> FindCategoryById(int id)
+    public async Task<CategoryDto?> FindCategoryById(int id)
     {
         var category = await context.Categories.FirstOrDefaultAsync(c => c.CategoryId == id);
         return category == null ? null : MapToDto(category);
@@ -63,9 +63,9 @@ public class InQCategoryService(
         MapToDto(category);
     }
 
-    private static InQCategoryDto MapToDto(InQCategory category)
+    private static CategoryDto MapToDto(Category category)
     {
-        return new InQCategoryDto
+        return new CategoryDto
         {
             CategoryId = category.CategoryId,
             CategoryName = category.CategoryName,

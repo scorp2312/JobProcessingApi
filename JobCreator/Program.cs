@@ -14,8 +14,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<JobService>();
-builder.Services.AddScoped<InQCategoryService>();
-builder.Services.AddScoped<InQService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<QuestionService>();
 
 builder.Services.AddMassTransit(x =>
 {

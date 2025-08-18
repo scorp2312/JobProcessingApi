@@ -11,11 +11,11 @@ public static class DataSeeder
             return;
         }
 
-        var categories = new List<InQCategory>
+        var categories = new List<Category>
         {
-            new InQCategory { CategoryName = "C#", CategoryId = 1 },
-            new InQCategory { CategoryName = "БД", CategoryId = 2 },
-            new InQCategory { CategoryName = "Общее", CategoryId = 3 },
+            new Category { CategoryName = "C#", CategoryId = 1 },
+            new Category { CategoryName = "БД", CategoryId = 2 },
+            new Category { CategoryName = "Общее", CategoryId = 3 },
         };
 
         await context.Categories.AddRangeAsync(categories);

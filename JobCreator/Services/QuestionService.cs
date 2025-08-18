@@ -3,28 +3,26 @@ namespace JobCreator.Services;
 using JobCreator.Data;
 using JobCreator.DTOs;
 using JobCreator.Models;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Shared.Messages.Events;
 
-public class InQService(
+public class QuestionService(
     ApplicationDbContext context)
 {
-    public async Task<InQuestionDto> CreateQuestion(CreateInQuestionDto createInQuestionDto)
+    public async Task<QuestionDto> CreateQuestion(CreateQuestionDto createQuestionDto)
     {
         var category = await context.Categories
-            .FirstOrDefaultAsync(c => c.CategoryId == createInQuestionDto.CategoryId);
+            .FirstOrDefaultAsync(c => c.CategoryId == createQuestionDto.CategoryId);
 
         if (category == null)
         {
-            throw new ArgumentException($"CategoryName with ID {createInQuestionDto.CategoryId} not found");
+            throw new ArgumentException($"CategoryName with ID {createQuestionDto.CategoryId} not found");
         }
 
-        var question = new InQuestion
+        var question = new Question
             {
                 Id = Guid.NewGuid(),
-                Question = createInQuestionDto.Question,
-                Answer = createInQuestionDto.Answer,
+                QuestionText = createQuestionDto.QuestionText,
+                Answer = createQuestionDto.Answer,
                 Category = category,
             };
 
@@ -34,13 +32,17 @@ public class InQService(
         return MapToDto(question);
     }
 
-    public async Task<List<InQuestionDto>> GetAllQuestions()
+    public async Task<List<QuestionDto>> GetAllQuestions()
     {
-        var questions = await context.InterviewQuestions.OrderBy(q => q.Id).ToListAsync();
+        var questions = await context.InterviewQuestions
+            .Include(q => q.Category)
+            .OrderByDescending(q => q.Id)
+            .ToListAsync();
+
         return questions.Select(MapToDto).ToList();
     }
 
-    public async Task<InQuestionDto?> FindQuestionById(Guid id)
+    public async Task<QuestionDto?> FindQuestionById(Guid id)
     {
         var question = await context.InterviewQuestions.FirstOrDefaultAsync(q => q.Id == id);
         if (question == null)
@@ -51,9 +53,11 @@ public class InQService(
         return MapToDto(question);
     }
 
-    public async Task<InQuestionDto?> DeleteQuestion(Guid id)
+    public async Task<QuestionDto?> DeleteQuestion(Guid id)
     {
-        var questionToDelete = await context.InterviewQuestions.FirstOrDefaultAsync(q => q.Id == id);
+        var questionToDelete = await context.InterviewQuestions
+            .Include(q => q.Category)
+            .FirstOrDefaultAsync(q => q.Id == id);
         if (questionToDelete == null)
         {
             return null;
@@ -64,7 +68,7 @@ public class InQService(
         return MapToDto(questionToDelete);
     }
 
-    public async Task<PaginatedList<InQuestionDto>> FindAndPaginateQuestions(int categoryId, int pageIndex = 1, int pageSize = 20)
+    public async Task<PaginatedList<QuestionDto>> FindAndPaginateQuestions(int categoryId, int pageIndex = 1, int pageSize = 20)
     {
         if (pageSize > 100)
         {
@@ -77,9 +81,6 @@ public class InQService(
 
         if (categoryId != 0)
         {
-            bool categoryExists = await context.Categories
-                .AnyAsync(c => c.CategoryId == categoryId);
-
             query = query.Where(q => q.Category.CategoryId == categoryId);
         }
 
@@ -89,12 +90,12 @@ public class InQService(
             .OrderByDescending(q => q.Id)
             .Skip((pageIndex - 1) * pageSize)
             .Take(pageSize)
-            .Select(question => new InQuestionDto
+            .Select(question => new QuestionDto
             {
                 Id = question.Id,
-                Question = question.Question,
+                QuestionText = question.QuestionText,
                 Answer = question.Answer,
-                Category = new InQCategoryDto
+                Category = new CategoryDto
                 {
                     CategoryId = question.Category.CategoryId,
                     CategoryName = question.Category.CategoryName,
@@ -103,10 +104,10 @@ public class InQService(
             .AsNoTracking()
             .ToListAsync();
 
-        return new PaginatedList<InQuestionDto>(items, totalItems, pageIndex, pageSize);
+        return new PaginatedList<QuestionDto>(items, totalItems, pageIndex, pageSize);
     }
 
-    public async Task<InQuestionDto?> UpdateQuestion(Guid id, string? newQuestion, string? newAnswer, InQCategory? newCategory)
+    public async Task<QuestionDto?> UpdateQuestion(Guid id, string? newQuestion, string? newAnswer, Category? newCategory)
     {
         var questionToChange = await context.InterviewQuestions.FirstOrDefaultAsync(q => q.Id == id);
         if (questionToChange == null)
@@ -116,7 +117,7 @@ public class InQService(
 
         if (newQuestion != null)
         {
-            questionToChange.Question = newQuestion;
+            questionToChange.QuestionText = newQuestion;
         }
 
         if (newAnswer != null)
@@ -130,17 +131,20 @@ public class InQService(
         }
 
         context.InterviewQuestions.Update(questionToChange);
+        await context.SaveChangesAsync();
         return MapToDto(questionToChange);
     }
 
-    private static InQuestionDto MapToDto(InQuestion question)
+    private static QuestionDto MapToDto(Question question)
     {
-        return new InQuestionDto
+        return new QuestionDto
         {
             Id = question.Id,
-            Question = question.Question,
+            QuestionText = question.QuestionText,
             Answer = question.Answer,
-            Category = new InQCategoryDto
+            Category = question.Category == null
+                ? null
+                : new CategoryDto
             {
                 CategoryId = question.Category.CategoryId,
                 CategoryName = question.Category.CategoryName,
