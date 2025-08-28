@@ -1,0 +1,48 @@
+namespace InterviewGuide.Application.Services;
+
+using InterviewGuide.Domain.Entities;
+using InterviewGuide.Domain.Interfaces;
+using InterviewGuide.DTOs;
+
+public class CategoryService(ICategoryRepository categoryRepository)
+{
+    public async Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto categoryDto)
+    {
+        var entity = new CategoryEntity()
+        {
+            CategoryName = categoryDto.CategoryName,
+        };
+
+        await categoryRepository.AddAsync(entity);
+        return MapToDto(entity);
+    }
+
+    public async Task<List<CategoryDto>> GetAllCategoriesAsync()
+    {
+        var categories = await categoryRepository.GetAllAsync();
+        return categories.Select(MapToDto).ToList();
+    }
+
+    public async Task<bool> UpdateCategoryAsync(int id, string newCategory)
+    {
+        var category = await categoryRepository.GetAsync(id) ?? throw new Exception("Category not found");
+
+        category.CategoryName = newCategory;
+        return await categoryRepository.UpdateAsync(category);
+    }
+
+    public async Task<bool> DeleteCategoryAsync(int categoryId)
+    {
+        var category = await categoryRepository.GetAsync(categoryId) ?? throw new Exception("Category not found");
+        return await categoryRepository.DeleteAsync(category);
+    }
+
+    private static CategoryDto MapToDto(CategoryEntity categoryEntity)
+    {
+        return new CategoryDto
+        {
+            Id = categoryEntity.Id,
+            CategoryName = categoryEntity.CategoryName,
+        };
+    }
+}
