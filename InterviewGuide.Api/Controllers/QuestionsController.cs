@@ -1,8 +1,8 @@
 namespace InterviewGuide.Controllers;
 
+using InterviewGuide.Application.Models;
 using InterviewGuide.Application.Services;
 using InterviewGuide.Domain.Entities;
-using InterviewGuide.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -15,16 +15,16 @@ public class QuestionsController(QuestionService questionService) : ControllerBa
         [FromQuery] int pageIndex = 1,
         [FromQuery] int pageSize = 10)
     {
-        var questions = await questionService.FindAndPaginateQuestionsAsync(
+        var questions = await questionService.FindAsync(
             categoryId, pageIndex, pageSize);
 
         return questions;
     }
 
     [HttpPost("Create")]
-    public async Task<QuestionDto> CreateQuestionAsync([FromBody] CreateQuestionDto request)
+    public async Task<QuestionDto> CreateQuestionAsync([FromBody] CreateQuestionDto questionDto)
     {
-        return await questionService.CreateQuestionAsync(request);
+        return await questionService.CreateQuestionAsync(questionDto);
     }
 
     [HttpGet]
@@ -34,7 +34,7 @@ public class QuestionsController(QuestionService questionService) : ControllerBa
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateAsync(
+    public async Task<IActionResult> UpdateQuestionAsync(
         [FromRoute] Guid id,
         [FromBody] UpdateQuestionDto data)
     {

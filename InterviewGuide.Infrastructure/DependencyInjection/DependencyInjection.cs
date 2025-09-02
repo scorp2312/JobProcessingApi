@@ -1,5 +1,6 @@
 namespace InterviewGuide.Infrastructure.DependencyInjection
 {
+    using InterviewGuide.Domain.Entities;
     using InterviewGuide.Domain.Interfaces;
     using InterviewGuide.Infrastructure.Data;
     using InterviewGuide.Infrastructure.Repositories;
@@ -14,7 +15,7 @@ namespace InterviewGuide.Infrastructure.DependencyInjection
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IRepository<CategoryEntity, int>, RepositoryBase<CategoryEntity, int>>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
 
             return services;

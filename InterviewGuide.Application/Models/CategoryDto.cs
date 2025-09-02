@@ -1,4 +1,4 @@
-namespace InterviewGuide.DTOs;
+namespace InterviewGuide.Application.Models;
 
 public class CategoryDto
 {

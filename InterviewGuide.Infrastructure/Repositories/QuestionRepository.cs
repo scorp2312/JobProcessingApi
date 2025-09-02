@@ -1,6 +1,7 @@
 namespace InterviewGuide.Infrastructure.Repositories;
 
 using InterviewGuide.Domain.Entities;
+using InterviewGuide.Domain.Exceptions;
 using InterviewGuide.Domain.Interfaces;
 using InterviewGuide.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -9,34 +10,7 @@ public class QuestionRepository(ApplicationDbContext context) : RepositoryBase<Q
 {
     private readonly ApplicationDbContext context = context;
 
-    public override async Task<QuestionEntity> AddAsync(QuestionEntity entity)
-    {
-        await this.dbSet.AddAsync(entity);
-        await this.context.SaveChangesAsync();
-        return entity;
-    }
-
-    public override async Task<List<QuestionEntity>> GetAllAsync()
-    {
-        return await this.dbSet
-            .Include(q => q.CategoryEntity)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public override async Task<QuestionEntity?> GetAsync(Guid id)
-    {
-        return await this.dbSet
-            .Include(q => q.CategoryEntity)
-            .FirstOrDefaultAsync(q => q.Id == id) ?? throw new ApplicationException($"Вопроса с Id: {id}. не существует.");
-    }
-
-    public override async Task<bool> UpdateAsync(QuestionEntity entity)
-    {
-        return await this.context.SaveChangesAsync() > 0;
-    }
-
-    public async Task<PaginatedList<QuestionEntity>> FindAndPaginateQuestionsAsync(
+    public async Task<PaginatedList<QuestionEntity>> FindAsync(
         int? categoryId,
         int pageIndex,
         int pageSize)

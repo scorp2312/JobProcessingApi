@@ -11,12 +11,12 @@ namespace InterviewGuide.Infrastructure.Data
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true)
-                .AddUserSecrets<DesignTimeDbContextFactoryAnchor>(optional: true) // <- здесь
+                .AddUserSecrets<DesignTimeDbContextFactoryAnchor>(optional: true)
                 .AddEnvironmentVariables()
                 .Build();
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            Console.WriteLine($"Connection string: {connectionString}"); // для проверки
+            Console.WriteLine($"Connection string: {connectionString}");
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionsBuilder.UseNpgsql(connectionString);

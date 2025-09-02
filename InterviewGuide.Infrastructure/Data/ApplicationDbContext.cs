@@ -24,6 +24,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 .HasForeignKey("CategoryId")
                 .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);
+
+            entity.Navigation(e => e.CategoryEntity).AutoInclude();
         });
 
         modelBuilder.Entity<CategoryEntity>(entity =>

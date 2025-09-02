@@ -4,5 +4,5 @@ using InterviewGuide.Domain.Entities;
 
 public interface IQuestionRepository : IRepository<QuestionEntity, Guid>
 {
-    Task<PaginatedList<QuestionEntity>> FindAndPaginateQuestionsAsync(int? categoryId, int pageIndex, int pageSize);
+    Task<PaginatedList<QuestionEntity>> FindAsync(int? categoryId, int pageIndex, int pageSize);
 }

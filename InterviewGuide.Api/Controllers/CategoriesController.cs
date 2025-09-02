@@ -1,7 +1,7 @@
 namespace InterviewGuide.Controllers;
 
+using InterviewGuide.Application.Models;
 using InterviewGuide.Application.Services;
-using InterviewGuide.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]

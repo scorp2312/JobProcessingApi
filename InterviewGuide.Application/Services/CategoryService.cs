@@ -1,10 +1,11 @@
 namespace InterviewGuide.Application.Services;
 
+using InterviewGuide.Application.Models;
 using InterviewGuide.Domain.Entities;
+using InterviewGuide.Domain.Exceptions;
 using InterviewGuide.Domain.Interfaces;
-using InterviewGuide.DTOs;
 
-public class CategoryService(ICategoryRepository categoryRepository)
+public class CategoryService(IRepository<CategoryEntity, int> categoryRepository)
 {
     public async Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto categoryDto)
     {
@@ -25,7 +26,7 @@ public class CategoryService(ICategoryRepository categoryRepository)
 
     public async Task<bool> UpdateCategoryAsync(int id, string newCategory)
     {
-        var category = await categoryRepository.GetAsync(id) ?? throw new Exception("Category not found");
+        var category = await categoryRepository.GetAsync(id) ?? throw new NotFoundException<int>(id);
 
         category.CategoryName = newCategory;
         return await categoryRepository.UpdateAsync(category);
@@ -33,7 +34,7 @@ public class CategoryService(ICategoryRepository categoryRepository)
 
     public async Task<bool> DeleteCategoryAsync(int categoryId)
     {
-        var category = await categoryRepository.GetAsync(categoryId) ?? throw new Exception("Category not found");
+        var category = await categoryRepository.GetAsync(categoryId) ?? throw new NotFoundException<int>(categoryId);
         return await categoryRepository.DeleteAsync(category);
     }
 
