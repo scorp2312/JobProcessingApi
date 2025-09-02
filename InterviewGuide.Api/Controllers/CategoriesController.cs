@@ -22,10 +22,10 @@ public class CategoriesController(CategoryService categoryService) : ControllerB
         return categories;
     }
 
-     [HttpPut("{categoryId:int}")]
-     public async Task<IActionResult> UpdateCategoryAsync(int categoryId, string newCategoryName)
+     [HttpPut("{id:int}")]
+     public async Task<IActionResult> UpdateCategoryAsync(int id, string newCategoryName)
     {
-        var updated = await categoryService.UpdateCategoryAsync(categoryId, newCategoryName);
+        var updated = await categoryService.UpdateCategoryAsync(id, newCategoryName);
         return updated ? this.Ok() : this.NotFound();
     }
 

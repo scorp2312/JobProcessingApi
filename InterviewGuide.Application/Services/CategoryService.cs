@@ -24,18 +24,18 @@ public class CategoryService(IRepository<CategoryEntity, int> categoryRepository
         return categories.Select(MapToDto).ToList();
     }
 
-    public async Task<bool> UpdateCategoryAsync(int id, string newCategory)
+    public async Task<bool> UpdateCategoryAsync(int id, string newCategoryName)
     {
         var category = await categoryRepository.GetAsync(id)
             ?? throw new NotFoundException<int>(id);
 
-        category.CategoryName = newCategory;
+        category.CategoryName = newCategoryName;
         return await categoryRepository.UpdateAsync(category);
     }
 
-    public async Task<bool> DeleteCategoryAsync(int categoryId)
+    public async Task<bool> DeleteCategoryAsync(int id)
     {
-        var category = await categoryRepository.GetAsync(categoryId) ?? throw new NotFoundException<int>(categoryId);
+        var category = await categoryRepository.GetAsync(id) ?? throw new NotFoundException<int>(id);
         return await categoryRepository.DeleteAsync(category);
     }
 
