@@ -23,8 +23,6 @@ if (app.Environment.IsDevelopment())
     builder.Configuration.AddUserSecrets<Program>(optional: true);
 }
 
-app.UseHttpsRedirection();
-app.UseAuthorization();
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope())

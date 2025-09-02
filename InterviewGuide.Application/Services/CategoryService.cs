@@ -26,7 +26,8 @@ public class CategoryService(IRepository<CategoryEntity, int> categoryRepository
 
     public async Task<bool> UpdateCategoryAsync(int id, string newCategory)
     {
-        var category = await categoryRepository.GetAsync(id) ?? throw new NotFoundException<int>(id);
+        var category = await categoryRepository.GetAsync(id)
+            ?? throw new NotFoundException<int>(id);
 
         category.CategoryName = newCategory;
         return await categoryRepository.UpdateAsync(category);

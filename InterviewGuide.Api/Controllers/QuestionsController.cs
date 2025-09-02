@@ -15,8 +15,7 @@ public class QuestionsController(QuestionService questionService) : ControllerBa
         [FromQuery] int pageIndex = 1,
         [FromQuery] int pageSize = 10)
     {
-        var questions = await questionService.FindAsync(
-            categoryId, pageIndex, pageSize);
+        var questions = await questionService.FindAsync(categoryId, pageIndex, pageSize);
 
         return questions;
     }

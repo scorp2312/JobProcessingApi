@@ -10,10 +10,7 @@ public class QuestionRepository(ApplicationDbContext context) : RepositoryBase<Q
 {
     private readonly ApplicationDbContext context = context;
 
-    public async Task<PaginatedList<QuestionEntity>> FindAsync(
-        int? categoryId,
-        int pageIndex,
-        int pageSize)
+    public async Task<PaginatedList<QuestionEntity>> FindAsync(int? categoryId, int pageIndex, int pageSize)
     {
         if (pageSize > 100)
         {

@@ -9,9 +9,8 @@ public class QuestionService(IQuestionRepository questionRepository, IRepository
 {
     public async Task<QuestionDto> CreateQuestionAsync(CreateQuestionDto questionDto)
     {
-        var category = await categoryRepository
-            .GetAsync(questionDto.CategoryId)
-                       ?? throw new NotFoundException<int>(questionDto.CategoryId);
+        var category = await categoryRepository.GetAsync(questionDto.CategoryId)
+            ?? throw new NotFoundException<int>(questionDto.CategoryId);
 
         var question = new QuestionEntity
         {
@@ -32,18 +31,14 @@ public class QuestionService(IQuestionRepository questionRepository, IRepository
 
     public async Task<bool> DeleteQuestionAsync(Guid id)
     {
-        var question = await questionRepository
-            .GetAsync(id)
-                       ?? throw new NotFoundException<Guid>(id);
+        var question = await questionRepository.GetAsync(id)
+            ?? throw new NotFoundException<Guid>(id);
         return await questionRepository.DeleteAsync(question);
     }
 
     public async Task<PaginatedList<QuestionDto>> FindAsync(int id, int pageIndex, int pageSize)
     {
-        var paginatedEntities = await questionRepository.FindAsync(
-            id,
-            pageIndex,
-            pageSize);
+        var paginatedEntities = await questionRepository.FindAsync(id, pageIndex, pageSize);
 
         var questionDtos = paginatedEntities.Items.Select(entity => new QuestionDto
         {
@@ -62,9 +57,8 @@ public class QuestionService(IQuestionRepository questionRepository, IRepository
 
     public async Task<bool> UpdateQuestionAsync(Guid id, UpdateQuestionDto questionDto)
     {
-        var question = await questionRepository
-            .GetAsync(id)
-                       ?? throw new NotFoundException<Guid>(id);
+        var question = await questionRepository.GetAsync(id)
+            ?? throw new NotFoundException<Guid>(id);
 
         if (questionDto.NewQuestion != null)
         {
@@ -78,9 +72,8 @@ public class QuestionService(IQuestionRepository questionRepository, IRepository
 
         if (questionDto.CategoryId != null)
         {
-            question.CategoryEntity = await categoryRepository
-                .GetAsync(questionDto.CategoryId.Value)
-                                      ?? throw new NotFoundException<Guid>(id);
+            question.CategoryEntity = await categoryRepository.GetAsync(questionDto.CategoryId.Value)
+                ?? throw new NotFoundException<Guid>(id);
         }
 
         return await questionRepository.UpdateAsync(question);

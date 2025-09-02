@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 public class CategoriesController(CategoryService categoryService) : ControllerBase
 {
      [HttpPost]
-     public async Task<CategoryDto> CreateCategoryAsync([FromBody] CreateCategoryDto request)
+     public async Task<CategoryDto> CreateCategoryAsync([FromBody] CreateCategoryDto categoryDto)
      {
-         var category = await categoryService.CreateCategoryAsync(request);
+         var category = await categoryService.CreateCategoryAsync(categoryDto);
          return category;
      }
 
