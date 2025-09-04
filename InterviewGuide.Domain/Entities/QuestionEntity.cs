@@ -9,4 +9,6 @@ public class QuestionEntity
     public required string Answer { get; set; }
 
     public required CategoryEntity CategoryEntity { get; set; }
+
+    public List<CommentEntity> Comments { get; set; } = [];
 }

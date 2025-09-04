@@ -15,13 +15,13 @@ public class CategoryService(IRepository<CategoryEntity, int> categoryRepository
         };
 
         await categoryRepository.AddAsync(entity);
-        return MapToDto(entity);
+        return MapCategoryToDto(entity);
     }
 
     public async Task<List<CategoryDto>> GetAllCategoriesAsync()
     {
         var categories = await categoryRepository.GetAllAsync();
-        return categories.Select(MapToDto).ToList();
+        return categories.Select(MapCategoryToDto).ToList();
     }
 
     public async Task<bool> UpdateCategoryAsync(int id, string newCategoryName)
@@ -39,7 +39,7 @@ public class CategoryService(IRepository<CategoryEntity, int> categoryRepository
         return await categoryRepository.DeleteAsync(category);
     }
 
-    private static CategoryDto MapToDto(CategoryEntity categoryEntity)
+    private static CategoryDto MapCategoryToDto(CategoryEntity categoryEntity)
     {
         return new CategoryDto
         {

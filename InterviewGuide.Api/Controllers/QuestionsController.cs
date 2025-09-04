@@ -20,7 +20,7 @@ public class QuestionsController(QuestionService questionService) : ControllerBa
         return questions;
     }
 
-    [HttpPost("Create")]
+    [HttpPost]
     public async Task<QuestionDto> CreateQuestionAsync([FromBody] CreateQuestionDto questionDto)
     {
         return await questionService.CreateQuestionAsync(questionDto);

@@ -5,7 +5,7 @@ using InterviewGuide.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/interview-questions/categories")]
+[Route("api/questions/categories")]
 public class CategoriesController(CategoryService categoryService) : ControllerBase
 {
      [HttpPost]
