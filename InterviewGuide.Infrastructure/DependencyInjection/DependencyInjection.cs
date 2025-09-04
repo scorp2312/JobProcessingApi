@@ -16,6 +16,7 @@ namespace InterviewGuide.Infrastructure.DependencyInjection
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IRepository<CategoryEntity, int>, RepositoryBase<CategoryEntity, int>>();
+            services.AddScoped<IRepository<CommentEntity, Guid>, RepositoryBase<CommentEntity, Guid>>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
 
             return services;

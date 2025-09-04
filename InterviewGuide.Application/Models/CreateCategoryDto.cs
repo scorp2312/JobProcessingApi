@@ -2,5 +2,5 @@ namespace InterviewGuide.Application.Models;
 
 public class CreateCategoryDto
 {
-    public string? CategoryName { get; set; }
+    public required string CategoryName { get; init; }
 }

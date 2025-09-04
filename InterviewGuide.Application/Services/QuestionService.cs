@@ -5,7 +5,10 @@ using InterviewGuide.Domain.Entities;
 using InterviewGuide.Domain.Exceptions;
 using InterviewGuide.Domain.Interfaces;
 
-public class QuestionService(IQuestionRepository questionRepository, IRepository<CategoryEntity, int> categoryRepository)
+public class QuestionService(
+    IQuestionRepository questionRepository,
+    IRepository<CategoryEntity, int> categoryRepository,
+    IRepository<CommentEntity, Guid> commentRepository)
 {
     public async Task<QuestionDto> CreateQuestionAsync(CreateQuestionDto questionDto)
     {
@@ -20,13 +23,13 @@ public class QuestionService(IQuestionRepository questionRepository, IRepository
         };
 
         await questionRepository.AddAsync(question);
-        return MapToDto(question);
+        return MapQuestionToDto(question);
     }
 
     public async Task<List<QuestionDto>> GetAllQuestionsAsync()
     {
         var questions = await questionRepository.GetAllAsync();
-        return questions.Select(MapToDto).ToList();
+        return questions.Select(MapQuestionToDto).ToList();
     }
 
     public async Task<bool> DeleteQuestionAsync(Guid id)
@@ -79,7 +82,36 @@ public class QuestionService(IQuestionRepository questionRepository, IRepository
         return await questionRepository.UpdateAsync(question);
     }
 
-    private static QuestionDto MapToDto(QuestionEntity questionEntity)
+    public async Task<List<CommentDto>> GetAllCommentsByQuestionAsync(Guid questionId)
+    {
+        var question = await questionRepository.GetAsync(questionId) ?? throw new NotFoundException<Guid>(questionId);
+        var comments = question.Comments.OrderBy(c => c.Created).Select(MapCommentsToDto).ToList();
+        return comments;
+    }
+
+    public async Task<CommentDto> CreateCommentAsync(CreateCommentDto commentDto, Guid questionId)
+    {
+        var question = await questionRepository.GetAsync(questionId) ?? throw new NotFoundException<Guid>(questionId);
+        var comment = new CommentEntity
+        {
+            Author = commentDto.Author,
+            Content = commentDto.Content,
+            Question = question,
+            QuestionId = question.Id,
+            Created = DateTime.UtcNow,
+        };
+        await commentRepository.AddAsync(comment);
+        return MapCommentsToDto(comment);
+    }
+
+    public async Task<bool> DeleteCommentAsync(Guid commentId)
+    {
+        var comment = await commentRepository.GetAsync(commentId)
+            ?? throw new NotFoundException<Guid>(commentId);
+        return await commentRepository.DeleteAsync(comment);
+    }
+
+    private static QuestionDto MapQuestionToDto(QuestionEntity questionEntity)
     {
         return new QuestionDto
         {
@@ -87,6 +119,17 @@ public class QuestionService(IQuestionRepository questionRepository, IRepository
             QuestionText = questionEntity.QuestionText,
             Answer = questionEntity.Answer,
             CategoryId = questionEntity.CategoryEntity.Id,
+        };
+    }
+
+    private static CommentDto MapCommentsToDto(CommentEntity commentEntity)
+    {
+        return new CommentDto
+        {
+            Id = commentEntity.Id,
+            Author = commentEntity.Author,
+            Content = commentEntity.Content,
+            Created = commentEntity.Created,
         };
     }
 }

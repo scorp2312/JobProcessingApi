@@ -9,6 +9,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<CategoryEntity> Categories { get; set; }
 
+    public DbSet<CommentEntity> Comments { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<QuestionEntity>(entity =>
@@ -25,7 +27,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);
 
+            entity
+                .HasMany(e => e.Comments)
+                .WithOne(c => c.Question)
+                .HasForeignKey(c => c.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             entity.Navigation(e => e.CategoryEntity).AutoInclude();
+            entity.Navigation(e => e.Comments).AutoInclude();
         });
 
         modelBuilder.Entity<CategoryEntity>(entity =>
@@ -34,6 +43,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.Property(e => e.Id)
                 .ValueGeneratedOnAdd();
             entity.Property(e => e.CategoryName).IsRequired().HasMaxLength(500);
+        });
+
+        modelBuilder.Entity<CommentEntity>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Author).IsRequired();
+            entity.Property(e => e.Content).IsRequired();
+            entity.Property(e => e.Created).IsRequired();
         });
     }
 }
