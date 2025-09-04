@@ -16,7 +16,7 @@ public class CommentsController(QuestionService questionService) : ControllerBas
     }
 
      [HttpPost]
-     public async Task<CommentDto> CreateCommentAsync([FromBody] CreateCommentDto commentDto, Guid questionId)
+     public async Task<CommentDto> CreateCommentAsync([FromRoute]Guid questionId, [FromBody] CreateCommentDto commentDto)
     {
         return await questionService.CreateCommentAsync(commentDto, questionId);
     }

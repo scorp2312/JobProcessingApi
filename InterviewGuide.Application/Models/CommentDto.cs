@@ -2,11 +2,11 @@ namespace InterviewGuide.Application.Models;
 
 public class CommentDto
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; init; }
 
-    public required string Author { get; set; }
+    public required string Author { get; init; }
 
-    public required string Content { get; set; }
+    public required string Content { get; init; }
 
-    public DateTime Created { get; set; }
+    public required DateTime Created { get; init; }
 }

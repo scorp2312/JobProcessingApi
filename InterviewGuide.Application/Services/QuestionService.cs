@@ -82,22 +82,23 @@ public class QuestionService(
         return await questionRepository.UpdateAsync(question);
     }
 
-    public async Task<List<CommentDto>> GetAllCommentsByQuestionAsync(Guid id)
+    public async Task<List<CommentDto>> GetAllCommentsByQuestionAsync(Guid questionId)
     {
-        var question = await questionRepository.GetAsync(id) ?? throw new NotFoundException<Guid>(id);
-        var comments = question.Comments.Select(MapCommentsToDto).ToList();
+        var question = await questionRepository.GetAsync(questionId) ?? throw new NotFoundException<Guid>(questionId);
+        var comments = question.Comments.OrderBy(c => c.Created).Select(MapCommentsToDto).ToList();
         return comments;
     }
 
-    public async Task<CommentDto> CreateCommentAsync(CreateCommentDto commentDto, Guid id)
+    public async Task<CommentDto> CreateCommentAsync(CreateCommentDto commentDto, Guid questionId)
     {
-        var question = await questionRepository.GetAsync(id) ?? throw new NotFoundException<Guid>(id);
+        var question = await questionRepository.GetAsync(questionId) ?? throw new NotFoundException<Guid>(questionId);
         var comment = new CommentEntity
         {
             Author = commentDto.Author,
             Content = commentDto.Content,
             Question = question,
             QuestionId = question.Id,
+            Created = DateTime.UtcNow,
         };
         await commentRepository.AddAsync(comment);
         return MapCommentsToDto(comment);

@@ -36,6 +36,11 @@ namespace InterviewGuide.Infrastructure.Migrations
                 name: "IX_Comments_QuestionId",
                 table: "Comments",
                 column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_Created",
+                table: "Comments",
+                column: "Created");
         }
 
         /// <inheritdoc />

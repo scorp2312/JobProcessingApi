@@ -8,7 +8,7 @@ public class CommentEntity
 
     public required string Content { get; set; }
 
-    public DateTime Created { get; init; } = DateTime.UtcNow;
+    public required DateTime Created { get; init; } = DateTime.UtcNow;
 
     public required QuestionEntity Question { get; init; }
 
