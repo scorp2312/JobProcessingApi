@@ -13,7 +13,7 @@ public class QuestionService(
     public async Task<QuestionDto> CreateQuestionAsync(CreateQuestionDto questionDto)
     {
         var category = await categoryRepository.GetAsync(questionDto.CategoryId)
-            ?? throw new NotFoundException<int>(questionDto.CategoryId);
+            ?? throw new NotFoundException(questionDto.CategoryId.ToString());
 
         var question = new QuestionEntity
         {
@@ -35,7 +35,7 @@ public class QuestionService(
     public async Task<bool> DeleteQuestionAsync(Guid id)
     {
         var question = await questionRepository.GetAsync(id)
-            ?? throw new NotFoundException<Guid>(id);
+            ?? throw new NotFoundException(id.ToString());
         return await questionRepository.DeleteAsync(question);
     }
 
@@ -61,7 +61,7 @@ public class QuestionService(
     public async Task<bool> UpdateQuestionAsync(Guid id, UpdateQuestionDto questionDto)
     {
         var question = await questionRepository.GetAsync(id)
-            ?? throw new NotFoundException<Guid>(id);
+            ?? throw new NotFoundException(id.ToString());
 
         if (questionDto.NewQuestion != null)
         {
@@ -76,7 +76,7 @@ public class QuestionService(
         if (questionDto.CategoryId != null)
         {
             question.CategoryEntity = await categoryRepository.GetAsync(questionDto.CategoryId.Value)
-                ?? throw new NotFoundException<Guid>(id);
+                ?? throw new NotFoundException(id.ToString());
         }
 
         return await questionRepository.UpdateAsync(question);
@@ -84,14 +84,14 @@ public class QuestionService(
 
     public async Task<List<CommentDto>> GetAllCommentsByQuestionAsync(Guid questionId)
     {
-        var question = await questionRepository.GetAsync(questionId) ?? throw new NotFoundException<Guid>(questionId);
+        var question = await questionRepository.GetAsync(questionId) ?? throw new NotFoundException(questionId.ToString());
         var comments = question.Comments.OrderBy(c => c.Created).Select(MapCommentsToDto).ToList();
         return comments;
     }
 
     public async Task<CommentDto> CreateCommentAsync(CreateCommentDto commentDto, Guid questionId)
     {
-        var question = await questionRepository.GetAsync(questionId) ?? throw new NotFoundException<Guid>(questionId);
+        var question = await questionRepository.GetAsync(questionId) ?? throw new NotFoundException(questionId.ToString());
         var comment = new CommentEntity
         {
             Author = commentDto.Author,
@@ -107,7 +107,7 @@ public class QuestionService(
     public async Task<bool> DeleteCommentAsync(Guid commentId)
     {
         var comment = await commentRepository.GetAsync(commentId)
-            ?? throw new NotFoundException<Guid>(commentId);
+            ?? throw new NotFoundException(commentId.ToString());
         return await commentRepository.DeleteAsync(comment);
     }
 

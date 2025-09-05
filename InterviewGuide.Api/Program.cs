@@ -1,6 +1,7 @@
 using InterviewGuide.Application.Services;
 using InterviewGuide.Infrastructure.Data;
 using InterviewGuide.Infrastructure.DependencyInjection;
+using InterviewGuide.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,8 @@ builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<QuestionService>();
 
 var app = builder.Build();
+
+app.UseMiddleware<MyExceptionHandler>();
 
 if (app.Environment.IsDevelopment())
 {

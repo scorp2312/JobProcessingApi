@@ -21,7 +21,7 @@ public class RepositoryBase<TEntity, TKey>(ApplicationDbContext context)
     public async Task<TEntity?> GetAsync(TKey id)
     {
         return await this.dbSet.FindAsync(id)
-            ?? throw new NotFoundException<TKey>(id);
+            ?? throw new NotFoundException(id!.ToString());
     }
 
     public async Task<List<TEntity>> GetAllAsync()
