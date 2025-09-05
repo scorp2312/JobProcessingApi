@@ -14,16 +14,7 @@ public class MyExceptionHandler(RequestDelegate next, ILogger<MyExceptionHandler
         {
             await this.next(context);
         }
-        catch (Exception exception)
-        {
-            await this.HandleExceptionAsync(context, exception);
-        }
-    }
-
-    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
-    {
-        if (exception.GetType().IsGenericType &&
-            exception.GetType().GetGenericTypeDefinition() == typeof(NotFoundException<>))
+        catch (NotFoundException exception)
         {
             this.logger.LogError(exception, exception.Message);
             context.Response.StatusCode = StatusCodes.Status404NotFound;
@@ -33,8 +24,9 @@ public class MyExceptionHandler(RequestDelegate next, ILogger<MyExceptionHandler
             };
             await context.Response.WriteAsJsonAsync(errorResponse);
         }
-        else
+        catch (Exception exception)
         {
+            this.logger.LogError(exception, exception.Message);
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
         }
     }

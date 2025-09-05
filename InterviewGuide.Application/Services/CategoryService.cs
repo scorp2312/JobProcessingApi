@@ -27,7 +27,7 @@ public class CategoryService(IRepository<CategoryEntity, int> categoryRepository
     public async Task<bool> UpdateCategoryAsync(int id, string newCategoryName)
     {
         var category = await categoryRepository.GetAsync(id)
-            ?? throw new NotFoundException<int>(id);
+            ?? throw new NotFoundException(id.ToString());
 
         category.CategoryName = newCategoryName;
         return await categoryRepository.UpdateAsync(category);
@@ -35,7 +35,7 @@ public class CategoryService(IRepository<CategoryEntity, int> categoryRepository
 
     public async Task<bool> DeleteCategoryAsync(int id)
     {
-        var category = await categoryRepository.GetAsync(id) ?? throw new NotFoundException<int>(id);
+        var category = await categoryRepository.GetAsync(id) ?? throw new NotFoundException(id.ToString());
         return await categoryRepository.DeleteAsync(category);
     }
 

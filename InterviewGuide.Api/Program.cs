@@ -17,9 +17,10 @@ builder.Services.AddScoped<QuestionService>();
 
 var app = builder.Build();
 
+app.UseMiddleware<MyExceptionHandler>();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseMiddleware<MyExceptionHandler>();
     app.UseSwagger();
     app.UseSwaggerUI();
     builder.Configuration.AddUserSecrets<Program>(optional: true);
