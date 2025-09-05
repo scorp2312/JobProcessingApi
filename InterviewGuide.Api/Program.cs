@@ -1,6 +1,7 @@
 using InterviewGuide.Application.Services;
 using InterviewGuide.Infrastructure.Data;
 using InterviewGuide.Infrastructure.DependencyInjection;
+using InterviewGuide.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseMiddleware<MyExceptionHandler>();
     app.UseSwagger();
     app.UseSwaggerUI();
     builder.Configuration.AddUserSecrets<Program>(optional: true);
