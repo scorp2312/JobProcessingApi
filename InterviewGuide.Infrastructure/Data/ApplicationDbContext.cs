@@ -11,6 +11,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public DbSet<CommentEntity> Comments { get; set; }
 
+    public DbSet<UserEntity> Users { get; set; }
+
+    public DbSet<RoleEntity> Roles { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<QuestionEntity>(entity =>
@@ -51,6 +55,23 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.Property(e => e.Author).IsRequired();
             entity.Property(e => e.Content).IsRequired();
             entity.Property(e => e.Created).IsRequired();
+        });
+
+        modelBuilder.Entity<UserEntity>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Login).IsRequired().HasMaxLength(25);
+            entity.Property(e => e.PasswordHash).IsRequired();
+
+            entity.HasMany(e => e.Roles).WithMany();
+
+            entity.Navigation(e => e.Roles).AutoInclude();
+        });
+
+        modelBuilder.Entity<RoleEntity>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired();
         });
     }
 }

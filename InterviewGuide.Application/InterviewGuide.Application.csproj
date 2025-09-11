@@ -10,6 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.17"/>
         <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.14.0">
           <PrivateAssets>all</PrivateAssets>
