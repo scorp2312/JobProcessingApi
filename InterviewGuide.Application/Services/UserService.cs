@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 
 public class UserService(IUserRepository userRepository, IRepository<RoleEntity, int> roleRepository)
 {
+    private const string LoginTaken = "Пользователь с таким именем уже существует";
+
     public async Task<PaginatedList<UserDto>> FindAsync(string? login, int pageIndex, int pageSize)
     {
         var paginatedUsers = await userRepository.FindAsync(login, pageIndex, pageSize);
@@ -22,7 +24,7 @@ public class UserService(IUserRepository userRepository, IRepository<RoleEntity,
         var users = await userRepository.GetAllAsync();
         if (users.Any(u => u.Login == userDto.Login))
         {
-            throw new BusinessException("пользователь с таким именем уже существует", StatusCodes.Status400BadRequest);
+            throw new BusinessException(LoginTaken, StatusCodes.Status400BadRequest);
         }
 
         var roles = await roleRepository.GetAllAsync();
@@ -57,7 +59,7 @@ public class UserService(IUserRepository userRepository, IRepository<RoleEntity,
 
             if (users.Any(u => u.Login == userDto.NewLogin))
             {
-                throw new BusinessException("Пользователь с таким именем уже существует", StatusCodes.Status400BadRequest);
+                throw new BusinessException(LoginTaken, StatusCodes.Status400BadRequest);
             }
 
             user.Login = userDto.NewLogin;
