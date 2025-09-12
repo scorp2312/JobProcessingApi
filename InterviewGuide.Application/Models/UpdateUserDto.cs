@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 public class UpdateUserDto
 {
-    [Required]
     [MaxLength(25)]
     [RegularExpression(
         @"^(?=.*[a-zA-Z0-9])[a-zA-Z0-9]*$",
