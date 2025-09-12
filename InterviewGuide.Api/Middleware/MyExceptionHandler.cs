@@ -28,8 +28,11 @@ public class MyExceptionHandler(RequestDelegate next, ILogger<MyExceptionHandler
         {
             this.logger.LogError(exception, exception.ErrorMessage);
             context.Response.StatusCode = exception.ErrorStatusCode;
-
-            await context.Response.WriteAsJsonAsync(exception.ErrorMessage);
+            var errorResponse = new ErrorResponse
+            {
+                ErrorMessage = exception.ErrorMessage,
+            };
+            await context.Response.WriteAsJsonAsync(errorResponse);
         }
         catch (Exception exception)
         {

@@ -57,7 +57,7 @@ public class UserService(IUserRepository userRepository, IRepository<RoleEntity,
 
             if (users.Any(u => u.Login == userDto.NewLogin))
             {
-                throw new BusinessException("пользователь с таким именем уже существует", StatusCodes.Status400BadRequest);
+                throw new BusinessException("Пользователь с таким именем уже существует", StatusCodes.Status400BadRequest);
             }
 
             user.Login = userDto.NewLogin;
