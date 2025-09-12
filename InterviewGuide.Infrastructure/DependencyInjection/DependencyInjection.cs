@@ -17,7 +17,9 @@ namespace InterviewGuide.Infrastructure.DependencyInjection
 
             services.AddScoped<IRepository<CategoryEntity, int>, RepositoryBase<CategoryEntity, int>>();
             services.AddScoped<IRepository<CommentEntity, Guid>, RepositoryBase<CommentEntity, Guid>>();
+            services.AddScoped<IRepository<RoleEntity, int>, RepositoryBase<RoleEntity, int>>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }
