@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/Users")]
-
 public class UsersController(UserService userService) : ControllerBase
 {
     [HttpGet("Find")]

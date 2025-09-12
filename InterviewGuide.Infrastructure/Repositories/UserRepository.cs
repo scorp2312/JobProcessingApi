@@ -17,8 +17,7 @@ public class UserRepository(ApplicationDbContext context) : RepositoryBase<UserE
             pageSize = 100;
         }
 
-        var query = this.context.Users
-            .AsQueryable();
+        var query = this.context.Users.AsQueryable();
 
         if (login != null)
         {

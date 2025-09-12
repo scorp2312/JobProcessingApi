@@ -1,11 +1,10 @@
 namespace InterviewGuide.Application.Services;
 
-using System.ComponentModel.DataAnnotations;
-using BCrypt;
 using InterviewGuide.Application.Models;
 using InterviewGuide.Domain.Entities;
 using InterviewGuide.Domain.Exceptions;
 using InterviewGuide.Domain.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 public class UserService(IUserRepository userRepository, IRepository<RoleEntity, int> roleRepository)
 {
@@ -20,6 +19,12 @@ public class UserService(IUserRepository userRepository, IRepository<RoleEntity,
 
     public async Task<UserDto> CreateUserAsync(CreateUserDto userDto)
     {
+        var users = await userRepository.GetAllAsync();
+        if (users.Any(u => u.Login == userDto.Login))
+        {
+            throw new BusinessException("пользователь с таким именем уже существует", StatusCodes.Status400BadRequest);
+        }
+
         var roles = await roleRepository.GetAllAsync();
         var userRoles = roles.Where(role => userDto.RoleIds.Contains(role.Id)).ToList();
 
@@ -31,7 +36,6 @@ public class UserService(IUserRepository userRepository, IRepository<RoleEntity,
             PasswordHash = passwordHash,
             Roles = userRoles,
         };
-
         await userRepository.AddAsync(user);
         return MapUserToDto(user);
     }
@@ -46,8 +50,16 @@ public class UserService(IUserRepository userRepository, IRepository<RoleEntity,
     {
         var user = await userRepository.GetAsync(id)
             ?? throw new NotFoundException(id.ToString());
+
         if (userDto.NewLogin != null)
         {
+            var users = await userRepository.GetAllAsync();
+
+            if (users.Any(u => u.Login == userDto.NewLogin))
+            {
+                throw new BusinessException("пользователь с таким именем уже существует", StatusCodes.Status400BadRequest);
+            }
+
             user.Login = userDto.NewLogin;
         }
 

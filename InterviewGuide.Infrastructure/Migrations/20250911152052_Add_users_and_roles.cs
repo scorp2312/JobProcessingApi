@@ -38,6 +38,11 @@ namespace InterviewGuide.Infrastructure.Migrations
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Login",
+                table: "Users",
+                column: "UserEntityLogin");
+
             migrationBuilder.CreateTable(
                 name: "RoleEntityUserEntity",
                 columns: table => new
