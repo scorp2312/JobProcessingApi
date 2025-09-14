@@ -21,8 +21,7 @@ public class UserService(IUserRepository userRepository, IRepository<RoleEntity,
 
     public async Task<UserDto> CreateUserAsync(CreateUserDto userDto)
     {
-        var users = await userRepository.GetAllAsync();
-        if (users.Any(u => u.Login == userDto.Login))
+        if (await userRepository.ValidateLogin(userDto.Login))
         {
             throw new BusinessException(LoginTaken, StatusCodes.Status400BadRequest);
         }

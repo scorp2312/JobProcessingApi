@@ -35,4 +35,9 @@ public class UserRepository(ApplicationDbContext context) : RepositoryBase<UserE
 
         return new PaginatedList<UserEntity>(items, totalItems, pageIndex, pageSize);
     }
+
+    public async Task<bool> ValidateLogin(string login)
+    {
+        return await this.context.Users.AnyAsync(u => u.Login == login);
+    }
 }

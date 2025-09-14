@@ -5,4 +5,6 @@ using InterviewGuide.Domain.Entities;
 public interface IUserRepository : IRepository<UserEntity, Guid>
 {
     Task<PaginatedList<UserEntity>> FindAsync(string? login, int pageNumber, int pageSize);
+
+    Task<bool> ValidateLogin(string login);
 }
