@@ -24,6 +24,16 @@ public class MyExceptionHandler(RequestDelegate next, ILogger<MyExceptionHandler
             };
             await context.Response.WriteAsJsonAsync(errorResponse);
         }
+        catch (BusinessException exception)
+        {
+            this.logger.LogError(exception, exception.ErrorMessage);
+            context.Response.StatusCode = exception.ErrorStatusCode;
+            var errorResponse = new ErrorResponse
+            {
+                ErrorMessage = exception.ErrorMessage,
+            };
+            await context.Response.WriteAsJsonAsync(errorResponse);
+        }
         catch (Exception exception)
         {
             this.logger.LogError(exception, exception.Message);
